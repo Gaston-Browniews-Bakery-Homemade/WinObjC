@@ -14,6 +14,22 @@
 //
 //******************************************************************************
 
-@implementation NSXMLParser
+
+@implementation NSXMLNodeOptions
+
+////NSInteger NSXMLNodePreserveEmptyElements = NSXMLNodeExpandEmptyElement | NSXMLNodeCompactEmptyElement;
+////NSInteger NSXMLNodePreserveQuotes = NSXMLNodeUseSingleQuotes | NSXMLNodeUseDoubleQuotes;
+////NSInteger NSXMLNodePreserveAll =
+////NSXMLNodePreserveNamespaceOrder |
+////NSXMLNodePreserveAttributeOrder |
+////NSXMLNodePreserveEntities |
+////NSXMLNodePreservePrefixes |
+////NSXMLNodePreserveCDATA |
+////NSXMLNodePreserveEmptyElements |
+////NSXMLNodePreserveQuotes |
+////NSXMLNodePreserveWhitespace |
+////NSXMLNodePreserveDTD |
+////NSXMLNodePreserveCharacterReferences |
+////0xFFF00000;
 
 @end

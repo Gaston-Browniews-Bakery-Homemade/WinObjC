@@ -29,6 +29,7 @@
 #include <libxml/xpath.h>
 #include <libxml/dict.h>
 #include <libxml/xmlregexp.h>
+#include <libxml/valid.h>
 #include "CFInternal.h"
 #include "CFXMLInterface.h"
 

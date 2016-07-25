@@ -219,8 +219,8 @@
     <ClangCompile Include="$(MSBuildThisFileDirectory)..\..\..\Frameworks\Foundation\lex.yy.m">
       <AdditionalOptions>-Wno-incompatible-pointer-types-discards-qualifiers -Wno-deprecated-declarations %(AdditionalOptions)</AdditionalOptions>
     </ClangCompile>
-    <ClangCompile Include="$(MSBuildThisFileDirectory)..\..\..\Frameworks\Foundation\rules.tab.m" >
-        <AdditionalOptions>-Wno-implicit-function-declaration %(AdditionalOptions)</AdditionalOptions>
+    <ClangCompile Include="$(MSBuildThisFileDirectory)..\..\..\Frameworks\Foundation\rules.tab.m">
+      <AdditionalOptions>-Wno-implicit-function-declaration %(AdditionalOptions)</AdditionalOptions>
     </ClangCompile>
     <ClangCompile Include="$(MSBuildThisFileDirectory)..\..\..\Frameworks\Foundation\MainDispatcher.mm" />
     <ClangCompile Include="$(MSBuildThisFileDirectory)..\..\..\Frameworks\Foundation\NSCFString.mm" />
@@ -234,6 +234,12 @@
     <ClangCompile Include="$(MSBuildThisFileDirectory)..\..\..\Frameworks\Foundation\NSCFCalendar.mm" />
     <ClangCompile Include="$(MSBuildThisFileDirectory)..\..\..\Frameworks\Foundation\NSCFCollectionSupport.mm" />
     <ClangCompile Include="$(MSBuildThisFileDirectory)..\..\..\Frameworks\Foundation\_NSKeyValueCodingAggregateFunctions.mm" />
+    <ClangCompile Include="..\..\..\Frameworks\Foundation\NSXMLDocument.mm" />
+    <ClangCompile Include="..\..\..\Frameworks\Foundation\NSXMLDTD.mm" />
+    <ClangCompile Include="..\..\..\Frameworks\Foundation\NSXMLDTDNode.mm" />
+    <ClangCompile Include="..\..\..\Frameworks\Foundation\NSXMLElement.mm" />
+    <ClangCompile Include="..\..\..\Frameworks\Foundation\NSXMLNode.mm" />
+    <ClangCompile Include="..\..\..\Frameworks\Foundation\NSXMLNodeOptions.mm" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)..\..\..\Frameworks\Foundation\NSCFArray.h" />

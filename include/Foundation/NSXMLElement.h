@@ -10,10 +10,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 @class NSXMLNode,NSArray,NSError,NSDictionary,NSMutableDictionary,NSMutableArray;
 
-@interface NSXMLElement : NSXMLNode <NSCopying> {
-   NSMutableDictionary *_attributes;
-   NSMutableDictionary *_namespaces;
-}
+@interface NSXMLElement : NSXMLNode <NSCopying>
 
 -initWithName:(NSString *)name;
 -initWithName:(NSString *)name stringValue:(NSString *)string;
@@ -29,7 +26,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 -(NSXMLNode *)namespaceForPrefix:(NSString *)prefix;
 
 -(void)setAttributes:(NSArray *)attributes;
--(void)setAttributesAsDictionary:(NSDictionary *)attributes;
+-(void)setAttributesWithDictionary:(NSDictionary *)attributes;
 -(void)setChildren:(NSArray *)children;
 -(void)setNamespaces:(NSArray *)namespaces;
 

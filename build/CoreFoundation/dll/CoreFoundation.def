@@ -1297,3 +1297,71 @@ LIBRARY CoreFoundation
         kCFXMLTreeErrorLineNumber DATA
         kCFXMLTreeErrorLocation DATA
         kCFXMLTreeErrorStatusCode DATA
+
+        _CFXMLNewProperty
+        _CFXMLNewProcessingInstruction
+        _CFXMLNewDoc
+        _CFXMLNewNode
+        _CFXMLNewDTD
+        _CFXMLNodeSetPrivateData
+        _CFXMLDocSetStandalone
+        _CFXMLDocSetRootElement
+        _CFXMLDocValidate
+        _CFXMLNodeSetContent
+        _CFXMLParseDTD
+        _CFXMLParseDTDFromData
+        _CFXMLNodeSetURI
+        _CFXMLNodeSetURI
+        _CFXMLDocVersion
+        _CFXMLDocSetVersion
+        _CFXMLNewTextNode
+        _CFXMLNodeAddChild
+        _CFXMLUnlinkNode
+        _CFXMLNodeGetPrivateData
+        _CFXMLNodeGetParent
+        _CFXMLDocRootElement
+        _CFXMLNodeGetType
+        _CFXMLNodeGetFirstChild
+        _CFXMLNodeGetNextSibling
+        _CFXMLNodeGetPrevSibling
+        _CFXMLNodeGetParent
+        _CFXMLNodeGetLastChild
+        _CFXMLNodeGetDocument
+        _CFXMLNodeSetName
+        _CFXMLNodeGetName
+        _CFXMLNodesForXPath
+        _CFXMLStringWithOptions
+        _CFXMLNodeLocalName
+        _CFXMLNodePrefix
+        _CFXMLGetEntityContent
+        _CFXMLNodeGetContent
+        _CFXMLNodeURI
+        _CFXMLEncodeEntities
+        _CFXMLNewComment
+        _CFXMLParseDTDNode
+        _CFXMLNewNamespace
+        _CFXMLNodeGetElementChildCount
+        _CFXMLCopyNode
+        _CFXMLNodeReplaceNode
+        _CFXMLNodeAddPrevSibling
+        _CFXMLNodeAddNextSibling
+        _CFXMLNodeProperties
+        _CFXMLNodeHasProp
+        _CFXMLFreeNode
+        _CFXMLDocPtrFromDataWithOptions
+        _CFXMLDTDGetEntityDesc
+        _CFXMLDTDGetPredefinedEntity
+        _CFXMLDTDGetAttributeDesc
+        _CFXMLDTDGetElementDesc
+        _CFXMLDTDGetNotationDesc
+        _CFXMLParseDTDNode
+
+
+        _kCFXMLTypeElement DATA
+        _kCFXMLTypeDocument DATA
+        _kCFXMLTypeDTD DATA
+        _kCFXMLDTDNodeTypeEntity DATA
+        _kCFXMLDTDNodeTypeElement DATA
+        _kCFXMLDTDNodeTypeNotation DATA
+        _kCFXMLDTDNodeTypeAttribute DATA
+        _kCFXMLTypeAttribute DATA

@@ -33,59 +33,41 @@ typedef enum {
     NSXMLNotationDeclarationKind
 } NSXMLNodeKind;
 
-enum {
-    NSXMLNodeOptionsNone,
-    NSXMLNodeIsCDATA,
-    NSXMLNodeExpandEmptyElement,
-    NSXMLNodeCompactEmptyElement,
-    NSXMLNodeUseSingleQuotes,
-    NSXMLNodeUseDoubleQuotes,
-    NSXMLNodePrettyPrint,
-    NSXMLNodePreserveNamespaceOrder,
-    NSXMLNodePreserveAttributeOrder,
-    NSXMLNodePreserveEntities,
-    NSXMLNodePreserveCharacterReferences,
-    NSXMLNodePreservePrefixes,
-    NSXMLNodePreserveCDATA,
-    NSXMLNodePreserveWhitespace,
-    NSXMLNodePreserveEmptyElements,
-    NSXMLNodePreserveQuotes,
-    NSXMLNodePreserveDTD,
-    NSXMLNodePreserveAll,
-};
+@interface NSXMLNode : NSObject <NSCopying>
 
-@interface NSXMLNode : NSObject <NSCopying> {
-    NSXMLNode* _parent;
-    NSMutableArray* _children;
-    NSUInteger _index;
-    NSXMLNodeKind _kind;
-    NSUInteger _options;
-    NSString* _name;
-    id _value;
-}
 
-+ document;
-+ documentWithRootElement:(NSXMLElement*)element;
+@property(readonly) NSUInteger index    ;
+@property(readonly) NSXMLNodeKind kind  ;
+@property(readonly) NSUInteger level    ;
+@property(copy) NSString *name          ;
+@property(retain) id objectValue        ;
+@property(copy) NSString *stringValue   ;
+@property(copy) NSString *URI           ;
 
-+ elementWithName:(NSString*)name;
-+ elementWithName:(NSString*)name children:(NSArray*)children attributes:(NSArray*)attributes;
-+ elementWithName:(NSString*)name stringValue:(NSString*)string;
+-(void)setStringValue:(NSString *)string resolvingEntities : (BOOL)resolve;
 
-+ attributeWithName:(NSString*)name stringValue:(NSString*)string;
++ (id)document;
++ (id)documentWithRootElement:(NSXMLElement*)element;
 
-+ commentWithStringValue:(NSString*)string;
-+ textWithStringValue:(NSString*)string;
-+ processingInstructionWithName:(NSString*)name stringValue:(NSString*)string;
++ (id)elementWithName:(NSString*)name;
++ (id)elementWithName:(NSString*)name children:(NSArray*)children attributes:(NSArray*)attributes;
++ (id)elementWithName:(NSString*)name stringValue:(NSString*)string;
 
-+ DTDNodeWithXMLString:(NSString*)string;
-+ namespaceWithName:(NSString*)name stringValue:(NSString*)string;
++ (id)attributeWithName:(NSString*)name stringValue:(NSString*)string;
+
++(id)commentWithStringValue:(NSString*)string;
++(id)textWithStringValue:(NSString*)string;
++(id)processingInstructionWithName:(NSString*)name stringValue:(NSString*)string;
+
++ (id)DTDNodeWithXMLString:(NSString*)string;
++ (id)namespaceWithName:(NSString*)name stringValue:(NSString*)string;
 + (NSXMLNode*)predefinedNamespaceForPrefix:(NSString*)prefix;
 
 + (NSString*)prefixForName:(NSString*)name;
 + (NSString*)localNameForName:(NSString*)name;
 
-- initWithKind:(NSXMLNodeKind)kind;
-- initWithKind:(NSXMLNodeKind)kind options:(NSUInteger)options;
+- (id)initWithKind:(NSXMLNodeKind)kind;
+- (id)initWithKind:(NSXMLNodeKind)kind options:(NSUInteger)options;
 
 - (NSUInteger)index;
 - (NSXMLNodeKind)kind;
@@ -96,7 +78,7 @@ enum {
 - (NSXMLNode*)nextSibling;
 - (NSString*)stringValue;
 - (NSString*)URI;
-- objectValue;
+- (id)objectValue;
 - (NSXMLNode*)parent;
 - (NSString*)prefix;
 - (NSXMLNode*)previousNode;

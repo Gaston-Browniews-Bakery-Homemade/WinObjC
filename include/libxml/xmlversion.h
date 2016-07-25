@@ -90,10 +90,11 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
  *
  * Whether the thread support is configured in
  */
-#if 0
+#if 1
 #if defined(_REENTRANT) || defined(__MT__) || \
     (defined(_POSIX_C_SOURCE) && (_POSIX_C_SOURCE - 0 >= 199506L))
 #define LIBXML_THREAD_ENABLED
+#define LIBXML_THREAD_ALLOC_ENABLED
 #endif
 #endif
 
@@ -318,7 +319,7 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
  *
  * Whether the Unicode related interfaces are compiled in
  */
-#if 0
+#if 1
 #define LIBXML_UNICODE_ENABLED
 #endif
 
@@ -327,7 +328,7 @@ XMLPUBFUN void XMLCALL xmlCheckVersion(int version);
  *
  * Whether the regular expressions interfaces are compiled in
  */
-#if 0
+#if 1
 #define LIBXML_REGEXP_ENABLED
 #endif
 

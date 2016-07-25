@@ -248,6 +248,7 @@
     <ClangCompile Include="$(StarboardBasePath)\Frameworks\Foundation\NSObject_NSCoding.mm" />
     <ClangCompile Include="$(StarboardBasePath)\Frameworks\Foundation\NSKeyValueCoding.mm" />
     <ClangCompile Include="$(StarboardBasePath)\Frameworks\Foundation\NSString+HSTRING.mm" />
+    <ClangCompile Include="..\..\..\..\tests\unittests\Foundation\ReferenceFoundation\TestNSXMLDocument.mm" />
   </ItemGroup>
   <ItemGroup>
     <ClangCompile Include="$(StarboardBasePath)\tests\unittests\Foundation\ReferenceFoundation\TestNSURLResponse.mm" />
@@ -271,7 +272,6 @@
     <ClangCompile Include="$(StarboardBasePath)\tests\unittests\Foundation\NSBundleTests.mm" />
     <ClangCompile Include="$(StarboardBasePath)\tests\unittests\Foundation\NSCachedURLResponseTests.mm" />
     <ClangCompile Include="$(StarboardBasePath)\tests\unittests\Foundation\NSCalendarTests.mm" />
-
     <ClangCompile Include="$(StarboardBasePath)\tests\unittests\Foundation\NSCharacterSetTests.m" />
     <ClangCompile Include="$(StarboardBasePath)\tests\unittests\Foundation\NSComparisonPredicateTests.m" />
     <ClangCompile Include="$(StarboardBasePath)\tests\unittests\Foundation\NSCompoundPredicateTests.m" />

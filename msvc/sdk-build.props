@@ -138,6 +138,7 @@
     <CoreFoundationPublicHeader Include="$(MSBuildThisFileDirectory)..\Frameworks\CoreFoundation\Collections.subproj\CFData.h"/>
     <CoreFoundationPublicHeader Include="$(MSBuildThisFileDirectory)..\Frameworks\CoreFoundation\String.subproj\CFAttributedString.h"/>
     <CoreFoundationPublicHeader Include="$(MSBuildThisFileDirectory)..\Frameworks\CoreFoundation\Base.subproj\module.modulemap"/>
+    <CoreFoundationPublicHeader Include="$(MSBuildThisFileDirectory)..\Frameworks\CoreFoundation\Parsing.subproj\CFXMLInterface.h"/>
   </ItemGroup>
     <ItemGroup>
     <!-- Since Core Foundation has been forked and its directory structure does not match WinObjC's, copy all shared private headers into the right spot. -->
