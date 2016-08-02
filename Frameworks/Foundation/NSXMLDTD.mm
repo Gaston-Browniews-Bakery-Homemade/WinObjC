@@ -51,15 +51,15 @@
 -(NSXMLDTDNode *)attributeDeclarationForName:(NSString *)attributeName elementName:(NSString *)elementName {
     _CFXMLDTDNodePtr node = _CFXMLDTDGetAttributeDesc([self _getXmlNode], reinterpret_cast<const unsigned char*>([elementName UTF8String]), reinterpret_cast<const unsigned char*>([attributeName UTF8String]));
     if(node) {
-        return [NSXMLDTDNode _objectNodeForNodePointer:node];
+        return [NSXMLDTDNode _objectNodeForNodePtr:node];
     }
     return nil;
 }
 
--(NSXMLDTDNode *)elementDeclarationForName:(NSString *)name {
+-(NSXMLDTDNode *)elementDeclarationForName:(NSString*)name {
     _CFXMLDTDNodePtr node = _CFXMLDTDGetElementDesc([self _getXmlNode], reinterpret_cast<const unsigned char*>([name UTF8String]));
     if(node) {
-        return [NSXMLDTDNode _objectNodeForNodePointer:node];
+        return [NSXMLDTDNode _objectNodeForNodePtr:node];
     }
     return nil;
 }
@@ -67,7 +67,7 @@
 -(NSXMLDTDNode *)entityDeclarationForName:(NSString *)name {
     _CFXMLDTDNodePtr node = _CFXMLDTDGetEntityDesc([self _getXmlNode], reinterpret_cast<const unsigned char*>([name UTF8String]));
     if(node) {
-        return [NSXMLDTDNode _objectNodeForNodePointer:node];
+        return [NSXMLDTDNode _objectNodeForNodePtr:node];
     }
     return nil;
 }
@@ -75,7 +75,7 @@
 -(NSXMLDTDNode *)notationDeclarationForName:(NSString *)name {
     _CFXMLDTDNodePtr node = _CFXMLDTDGetNotationDesc([self _getXmlNode], reinterpret_cast<const unsigned char*>([name UTF8String]));
     if(node) {
-        return [NSXMLDTDNode _objectNodeForNodePointer:node];
+        return [NSXMLDTDNode _objectNodeForNodePtr:node];
     }
     return nil;
 }

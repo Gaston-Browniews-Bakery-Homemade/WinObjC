@@ -21,7 +21,7 @@
 @implementation NSXMLDTDNode
 
 -(instancetype)initWithXMLString:(NSString *)string {
-    _CFXMLDTDNodePtr ptr = _CFXMLParseDTDNode(reinterpret_cast<const unsigned char*>[string UTF8String]);
+    _CFXMLDTDNodePtr ptr = _CFXMLParseDTDNode(reinterpret_cast<const unsigned char*>([string UTF8String]));
     if(ptr) {
         return [super _initWithPointer:ptr];
     }
@@ -29,97 +29,81 @@
 }
 
 -(NSXMLDTDNodeKind)DTDKind {
-    switch _CFXMLNodeGetType([self _getXmlNode]) {
-        case _kCFXMLDTDNodeTypeElement:
-            switch _CFXMLDTDElementNodeGetType([self _getXmlNode]) {
-            case _kCFXMLDTDNodeElementTypeAny:
-                return .anyDeclaration
-                
-            case _kCFXMLDTDNodeElementTypeEmpty:
-                return .emptyDeclaration
-                
-            case _kCFXMLDTDNodeElementTypeMixed:
-                return .mixedDeclaration
-                
-            case _kCFXMLDTDNodeElementTypeElement:
-                return .elementDeclaration
-                
-            default:
-                return .undefinedDeclaration
-            }
-            
-        case _kCFXMLDTDNodeTypeEntity:
-            switch _CFXMLDTDEntityNodeGetType([self _getXmlNode]) {
-            case _kCFXMLDTDNodeEntityTypeInternalGeneral:
-                return .general
-                
-            case _kCFXMLDTDNodeEntityTypeExternalGeneralUnparsed:
-                return .unparsed
-                
-            case _kCFXMLDTDNodeEntityTypeExternalParameter:
-                fallthrough
-            case _kCFXMLDTDNodeEntityTypeInternalParameter:
-                return .parameter
-                
-            case _kCFXMLDTDNodeEntityTypeInternalPredefined:
-                return .predefined
-                
-            case _kCFXMLDTDNodeEntityTypeExternalGeneralParsed:
-                return .general
-                
-            default:
-                fatalError("Invalid entity declaration type")
-            }
-            
-        case _kCFXMLDTDNodeTypeAttribute:
-            switch _CFXMLDTDAttributeNodeGetType([self _getXmlNode]) {
-            case _kCFXMLDTDNodeAttributeTypeCData:
-                return .cdataAttribute
-                
-            case _kCFXMLDTDNodeAttributeTypeID:
-                return .idAttribute
-                
-            case _kCFXMLDTDNodeAttributeTypeIDRef:
-                return .idRefAttribute
-                
-            case _kCFXMLDTDNodeAttributeTypeIDRefs:
-                return .idRefsAttribute
-                
-            case _kCFXMLDTDNodeAttributeTypeEntity:
-                return .entityAttribute
-                
-            case _kCFXMLDTDNodeAttributeTypeEntities:
-                return .entitiesAttribute
-                
-            case _kCFXMLDTDNodeAttributeTypeNMToken:
-                return .nmTokenAttribute
-                
-            case _kCFXMLDTDNodeAttributeTypeNMTokens:
-                return .nmTokensAttribute
-                
-            case _kCFXMLDTDNodeAttributeTypeEnumeration:
-                return .enumerationAttribute
-                
-            case _kCFXMLDTDNodeAttributeTypeNotation:
-                return .notationAttribute
-                
-            default:
-                fatalError("Invalid attribute declaration type")
-            }
-            
-        case _kCFXMLTypeInvalid:
-            return unsafeBitCast(0, to: DTDKind.self) // this mirrors Darwin
-            
-        default:
-            fatalError("This is not actually a DTD node!")
+    CFIndex nodeType = _CFXMLNodeGetType([self _getXmlNode]);
+    if(nodeType == _kCFXMLDTDNodeTypeElement) {
+        CFIndex dtdType = _CFXMLDTDElementNodeGetType([self _getXmlNode]);
+        if(dtdType == _kCFXMLDTDNodeElementTypeAny) {
+            return NSXMLElementDeclarationAnyKind;
+        } else if(dtdType == _kCFXMLDTDNodeElementTypeEmpty) {
+            return NSXMLElementDeclarationEmptyKind;
+        } else if(dtdType == _kCFXMLDTDNodeElementTypeMixed) {
+            return NSXMLElementDeclarationEmptyKind;
+        } else if(dtdType == _kCFXMLDTDNodeElementTypeElement) {
+            return NSXMLElementDeclarationElementKind;
+        } else  {
+            return NSXMLElementDeclarationUndefinedKind;
         }
+    } else if(nodeType == _kCFXMLDTDNodeTypeEntity) {
+        CFIndex dtdType = _CFXMLDTDEntityNodeGetType([self _getXmlNode]);
+        if(dtdType == _kCFXMLDTDNodeEntityTypeInternalGeneral) {
+            return NSXMLEntityGeneralKind;
+        } else if(dtdType == _kCFXMLDTDNodeEntityTypeExternalGeneralUnparsed) {
+            return NSXMLEntityUnparsedKind;
+        } else if(dtdType == _kCFXMLDTDNodeEntityTypeExternalParameter) {
+            return NSXMLEntityParameterKind;
+        } else if(dtdType == _kCFXMLDTDNodeEntityTypeInternalParameter) {
+            return NSXMLEntityPredefined;
+        } else if(dtdType == _kCFXMLDTDNodeEntityTypeInternalPredefined) {
+            return NSXMLEntityPredefined;
+        } else if(dtdType == _kCFXMLDTDNodeEntityTypeExternalGeneralParsed) {
+            return NSXMLEntityParsedKind;
+        } else {
+            THROW_NS_IF_FALSE_MSG(E_INVALIDARG, false, "Invalid entity declaration type.");
+        }
+    } else if(nodeType == _kCFXMLDTDNodeTypeAttribute) {
+        CFIndex dtdType = _CFXMLDTDAttributeNodeGetType([self _getXmlNode]);
+
+        if(dtdType == _kCFXMLDTDNodeAttributeTypeCData) {
+            return NSXMLAttributeCDATAKind;
+        } else if(dtdType == _kCFXMLDTDNodeAttributeTypeID) {
+            return NSXMLAttributeIDKind;
+        } else if(dtdType == _kCFXMLDTDNodeAttributeTypeIDRef) {
+            return NSXMLAttributeIDRefKind;
+        } else if(dtdType == _kCFXMLDTDNodeAttributeTypeIDRefs) {
+            return NSXMLAttributeIDRefsKind;
+        } else if(dtdType == _kCFXMLDTDNodeAttributeTypeEntity) {
+            return NSXMLAttributeEntityKind;
+        } else if(dtdType == _kCFXMLDTDNodeAttributeTypeEntities) {
+            return NSXMLAttributeEntitiesKind;
+        } else if(dtdType == _kCFXMLDTDNodeAttributeTypeNMToken) {
+            return NSXMLAttributeNMTokenKind;
+        } else if(dtdType == _kCFXMLDTDNodeAttributeTypeNMTokens) {
+            return NSXMLAttributeNMTokensKind;
+        } else if(dtdType == _kCFXMLDTDNodeAttributeTypeEnumeration) {
+            return NSXMLAttributeEnumerationKind;
+        } else if(dtdType == _kCFXMLDTDNodeAttributeTypeNotation) {
+            return NSXMLAttributeNotationKind;
+        } else {
+            THROW_NS_IF_FALSE_MSG(E_INVALIDARG, false, "Invalid attribute declaration type.");
+        }
+    } else if(nodeType == _kCFXMLTypeInvalid) {
+        return (NSXMLDTDNodeKind)0;
+    } else {
+        THROW_NS_IF_FALSE_MSG(E_INVALIDARG, false, "This is not actually a DTD node!");
+    }
+    return (NSXMLDTDNodeKind)0;
 }
+
+-(void)setDTDKind:(NSXMLDTDNodeKind)kind {
+    //Unsupported in Core Foundation
+}
+
 -(BOOL)isExternal {
     return [self _systemID] != nil;
 }
 
 -(NSString *)notationName {
-    if([self dtdKind] != .unparsed) {
+    if([self DTDKind] != NSXMLEntityUnparsedKind) {
         return nil;
     }
 
@@ -127,11 +111,11 @@
 }
 
 -(void)setNotationName:(NSString*)newNotationName {
-    if([self dtdKind] != .unparsed) {
+    if([self DTDKind] != NSXMLEntityUnparsedKind) {
         return;
     }
 
-    _CFXMLNodeSetContent([self _getXmlNode], reinterpret_cast<const unsigned char*>([value UTF8String]));
+    _CFXMLNodeSetContent([self _getXmlNode], reinterpret_cast<const unsigned char*>([newNotationName UTF8String]));
 }
 
 -(NSString *)publicID {
@@ -139,15 +123,30 @@
 }
 
 -(void)setPublicID:(NSString*)newId {
-    _CFXMLDTDNodeSetPublicID([self _getXmlNode], value)
+    _CFXMLDTDNodeSetPublicID([self _getXmlNode], reinterpret_cast<const unsigned char*>([newId UTF8String]));
 }
 
 -(NSString *)systemID {
     return static_cast<NSString*>(_CFXMLDTDNodeGetSystemID([self _getXmlNode]));
 }
 
--(void)systemID:(NSString*)newSystemId {
-    _CFXMLDTDNodeSetSystemID([self _getXmlNode], [newSystemId UTF8String]);
+-(void)setSystemID:(NSString*)newSystemId {
+    _CFXMLDTDNodeSetSystemID([self _getXmlNode], reinterpret_cast<const unsigned char*>([newSystemId UTF8String]));
+}
+
++ (NSXMLNode*) _objectNodeForNodePtr:(_CFXMLNodePtr) ptr {
+    CFIndex type = _CFXMLNodeGetType(ptr);
+
+    if(!(type == _kCFXMLDTDNodeTypeAttribute || type == _kCFXMLDTDNodeTypeNotation || type == _kCFXMLDTDNodeTypeEntity || type == _kCFXMLDTDNodeTypeElement)) {
+        THROW_NS_HR_MSG(E_INVALIDARG, "Invalid DTDNode type.");   
+    }
+
+    void* privateData = _CFXMLNodeGetPrivateData(ptr);
+    if(privateData) {
+        return (NSXMLDTDNode*)privateData;
+    }
+
+    return [[[NSXMLDTDNode alloc] _initWithPointer:ptr] autorelease];
 }
 
 @end

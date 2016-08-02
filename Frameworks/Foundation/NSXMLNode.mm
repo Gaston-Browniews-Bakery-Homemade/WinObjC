@@ -23,6 +23,7 @@
 //
 
 #include "Starboard.h"
+#include "Foundation/NSXMLNode.h"
 #include <CoreFoundation/CFXMLNode.h>
 #include <CoreFoundation/CFXMLInterface.h>
 #include <libxml/tree.h>
@@ -707,7 +708,7 @@
         _CFXMLNodePtr parent = _CFXMLNodeGetParent(_xmlNode);
         if(parent) {
             NSXMLNode* parentNode = [NSXMLNode _objectNodeForNodePtr:parent];
-            [parentNode _addChild:self];
+            [parentNode _insertChild:self];
         }
     
         _CFXMLNodeSetPrivateData(_xmlNode, self);

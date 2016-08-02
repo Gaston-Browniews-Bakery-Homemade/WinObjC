@@ -17,29 +17,16 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 @class NSXMLDTD, NSURL, NSData, NSMutableArray;
 
-enum {
+typedef enum {
     NSXMLDocumentXMLKind = 0,
     NSXMLDocumentXHTMLKind = 1,
     NSXMLDocumentHTMLKind = 2,
     NSXMLDocumentTextKind = 3,
-};
+} NSXMLDocumentContentKind;
 
-typedef NSUInteger NSXMLDocumentContentKind;
+@interface NSXMLDocument : NSXMLNode
 
-@interface NSXMLDocument : NSXMLNode {
-    NSXMLDocumentContentKind _contentKind;
-    NSString* _version;
-    NSString* _characterEncoding;
-    NSString* _mimeType;
-    BOOL _isStandalone;
-
-    NSXMLElement* _rootElement;
-    NSXMLDTD* _dtd;
-    NSString* _uri;
-
-    // parsing state, should be moved out
-    NSMutableArray* _elementStack;
-}
+@property (copy) NSString* MIMEType;
 
 + (Class)replacementClassForClass:(Class)aClass;
 

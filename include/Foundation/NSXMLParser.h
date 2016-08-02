@@ -27,8 +27,7 @@
 @class NSError;
 @class NSDictionary;
 
-typedef NSInteger NSXMLParserError;
-enum {
+ typedef enum {
     NSXMLParserInternalError = 1,
     NSXMLParserOutOfMemoryError = 2,
     NSXMLParserDocumentStartError = 3,
@@ -122,9 +121,9 @@ enum {
     NSXMLParserURIFragmentError = 92,
     NSXMLParserNoDTDError = 94,
     NSXMLParserDelegateAbortedParseError = 512
-};
+} NSXMLParserError;
 
-FOUNDATION_EXPORT NSString* const NSXMLParserErrorDomain;
+FOUNDATION_EXPORT NSString* const NSXMLParserErrorDomain = @"NSXMLParserErrorDomain";
 
 FOUNDATION_EXPORT_CLASS
 @interface NSXMLParser : NSObject {

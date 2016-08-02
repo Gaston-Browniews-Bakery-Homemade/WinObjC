@@ -1355,7 +1355,22 @@ LIBRARY CoreFoundation
         _CFXMLDTDGetElementDesc
         _CFXMLDTDGetNotationDesc
         _CFXMLParseDTDNode
-
+        _CFXMLDTDElementNodeGetType
+        _CFXMLDTDEntityNodeGetType
+        _CFXMLDTDAttributeNodeGetType
+        _CFXMLDTDNodeGetPublicID
+        _CFXMLDTDNodeSetPublicID
+        _CFXMLDTDNodeGetSystemID
+        _CFXMLDTDNodeSetSystemID
+        _CFXMLDocProperties
+        _CFXMLDocSetProperties
+        _CFXMLDocCharacterEncoding
+        _CFXMLFreeDTD
+        _CFXMLDocSetDTD
+        _CFXMLDocSetStandalone
+        _CFXMLDocStandalone
+        _CFXMLDocDTD
+        _CFXMLDocSetCharacterEncoding
 
         _kCFXMLTypeElement DATA
         _kCFXMLTypeDocument DATA
@@ -1365,3 +1380,26 @@ LIBRARY CoreFoundation
         _kCFXMLDTDNodeTypeNotation DATA
         _kCFXMLDTDNodeTypeAttribute DATA
         _kCFXMLTypeAttribute DATA
+        _kCFXMLDocTypeHTML DATA
+
+        _kCFXMLDTDNodeElementTypeEmpty DATA
+        _kCFXMLDTDNodeElementTypeMixed DATA
+        _kCFXMLDTDNodeElementTypeElement DATA
+        _kCFXMLDTDNodeEntityTypeInternalGeneral DATA
+        _kCFXMLDTDNodeEntityTypeExternalGeneralUnparsed DATA
+        _kCFXMLDTDNodeEntityTypeExternalParameter DATA
+        _kCFXMLDTDNodeEntityTypeInternalParameter DATA
+        _kCFXMLDTDNodeEntityTypeInternalPredefined DATA
+        _kCFXMLDTDNodeEntityTypeExternalGeneralParsed DATA
+        _kCFXMLDTDNodeAttributeTypeCData DATA
+        _kCFXMLDTDNodeAttributeTypeID DATA
+        _kCFXMLDTDNodeAttributeTypeIDRef DATA
+        _kCFXMLDTDNodeAttributeTypeIDRefs DATA
+        _kCFXMLDTDNodeAttributeTypeEntity DATA
+        _kCFXMLDTDNodeAttributeTypeEntities DATA
+        _kCFXMLDTDNodeAttributeTypeNMToken DATA
+        _kCFXMLDTDNodeAttributeTypeNMTokens DATA
+        _kCFXMLDTDNodeAttributeTypeEnumeration DATA
+        _kCFXMLDTDNodeAttributeTypeNotation DATA
+        _kCFXMLDTDNodeElementTypeAny DATA
+        _kCFXMLTypeInvalid DATA

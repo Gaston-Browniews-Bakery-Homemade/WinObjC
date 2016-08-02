@@ -257,57 +257,54 @@ TEST(NSXMLDocument, Prefixes) {
     ASSERT_OBJCEQ(element.localName, @"root");
 }
 
-////TEST(NSXMLDocument, Validation_success) {
-////    NSString* validString = @"<?xml version=\"1.0\" standalone=\"yes\"?><!DOCTYPE foo [ <!ELEMENT foo (#PCDATA)> ]><foo>Hello world</foo>";
-////    NSError* err = [[[NSError alloc] init] autorelease];
-////    try {
-////        NSXMLDocument* doc = [NSXMLDocument alloc] initWithXMLString:validString options:0 error:err] autorelease];
-////        [doc validateAndReturnError:err];
-////    } catch (NSException e) {
-////        ASSERT_TRUE(false);
-////    }
-////
-////    NSString* plistDocString = @"<?xml version='1.0' encoding='utf-8'?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"> <plist version='1.0'><dict><key>MyKey</key><string>Hello!</string></dict></plist>";
-////    NSXMLDocument* plistDoc = [[[NSXMLDocument alloc] initWithXMLString:plistDocString options:0 error:err] autorelease];
-////    try {
-////        [doc validateAndReturnError:err];
-////        ASSERT_OBJCEQ([plistDoc rootElement].name, @"plist");
-////        NSPropertyListSerialization* plist = [NSPropertyListSerialization propertyListFromData:plistDoc.xmlData options:0 format:nil];
-////        ASSERT_TRUE([plist[@"MyKey"] isKindOfClass:[NSString class]]);
-////        ASSERT_OBJCEQ((NSString*)(plist[@"MyKey"]), @"Hello!");
-////    } catch (NSError* e) {
-////        ASSERT_TRUE(false);
-////    }
-////}
-////
-////TEST(NSXMLDocument, Validation_failure) throws {
-////    auto xmlString = @"<?xml version=\"1.0\@" standalone=\"yes\@"?><!DOCTYPE foo [ <!ELEMENT img EMPTY> ]><foo><img>not empty</img></foo>";
-////    do {
-////        auto doc = try XMLDocument(xmlString: xmlString options: 0);
-////        try [doc validate];
-////        ASSERT_TRUE_MSG(false, @"Should have thrown");
-////    } catch let nsError as NSError {
-////        ASSERT_TRUE(nsError.code == XMLParser.ErrorCode.internalError.rawValue);
-////        ASSERT_TRUE(nsError.domain == XMLParser.ErrorDomain);
-////        ASSERT_TRUE((NSString*)(nsError.userInfo[NSLocalizedDescriptionKey]) contains:@"Element img was declared EMPTY this one has content"));
-////    }
-////
-////    auto plistDocString = @"<?xml version='1.0' encoding='utf-8'?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\@" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\@"> <plist version='1.0'><dict><key>MyKey</key><string>Hello!</string><key>MyBooleanThing</key><true>foobar</true></dict></plist>";
-////    auto plistDoc = try XMLDocument(xmlString: plistDocString options: 0);
-////    do {
-////        try [plistDoc validate];
-////        ASSERT_TRUE_MSG(false, @"Should have thrown!");
-////    } catch let error as NSError {
-////        ASSERT_TRUE((NSString*)(error.userInfo[NSLocalizedDescriptionKey]) contains:@"Element true was declared EMPTY this one has content")];
-////    }
-////}
-////
+TEST(NSXMLDocument, Validation_success) {
+    NSString* validString = @"<?xml version=\"1.0\" standalone=\"yes\"?><!DOCTYPE foo [ <!ELEMENT foo (#PCDATA)> ]><foo>Hello world</foo>";
+    NSError* err = [[[NSError alloc] init] autorelease];
+    NSXMLDocument* doc = [[[NSXMLDocument alloc] initWithXMLString:validString options:0 error:&err] autorelease];
+    [doc validateAndReturnError:&err];
 
+    NSString* plistDocString = @"<?xml version='1.0' encoding='utf-8'?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"> <plist version='1.0'><dict><key>MyKey</key><string>Hello!</string></dict></plist>";
+    NSXMLDocument* plistDoc = [[[NSXMLDocument alloc] initWithXMLString:plistDocString options:0 error:&err] autorelease];
+
+    if([doc validateAndReturnError:&err]) {
+        ASSERT_OBJCEQ([plistDoc rootElement].name, @"plist");
+        NSPropertyListSerialization* plist = [NSPropertyListSerialization propertyListFromData:plistDoc.XMLData options:0 format:nil];
+        ////ASSERT_TRUE([plist[@"MyKey"] isKindOfClass:[NSString class]]);
+        ////ASSERT_OBJCEQ((NSString*)(plist[@"MyKey"]), @"Hello!");
+    } else {
+        ASSERT_TRUE(false);
+    }
+}
+
+TEST(NSXMLDocument, Validation_failure) {
+    auto xmlString = @"<?xml version=\"1.0\" standalone=\"yes\"?><!DOCTYPE foo [ <!ELEMENT img EMPTY> ]><foo><img>not empty</img></foo>";
+    NSError* err = [[[NSError alloc] init] autorelease];
+
+    NSXMLDocument* doc = [[[NSXMLDocument alloc] initWithXMLString:xmlString options:0 error:&err] autorelease];
+
+    [doc validateAndReturnError:&err];
+
+    if([doc validateAndReturnError:&err]) {
+        ASSERT_TRUE_MSG(false, @"Should have thrown");
+    } else {
+        ASSERT_TRUE(err.code == NSXMLParserInternalError);
+        ASSERT_TRUE(err.domain == NSXMLParserErrorDomain);
+        ASSERT_TRUE([(NSString*)(err.userInfo[NSLocalizedDescriptionKey]) contains:@"Element img was declared EMPTY this one has content"]);
+    }
+
+    NSString* plistDocString = @"<?xml version='1.0' encoding='utf-8'?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"> <plist version='1.0'><dict><key>MyKey</key><string>Hello!</string><key>MyBooleanThing</key><true>foobar</true></dict></plist>";
+    NSXMLDocument* plistDoc = [[[NSXMLDocument alloc] initWithXMLString:plistDocString options:0 error:&err] autorelease];
+
+    if([plistDoc validateAndReturnError:&err]) {
+        ASSERT_TRUE_MSG(false, @"Should have thrown!");
+    } else {
+        ASSERT_TRUE([(NSString*)(err.userInfo[NSLocalizedDescriptionKey]) contains:@"Element true was declared EMPTY this one has content"]);
+    }
+}
 
 TEST(NSXMLDocument, Dtd) {
     NSXMLDTDNode* node = (NSXMLDTDNode*)[NSXMLNode DTDNodeWithXMLString:@"<!ELEMENT foo (#PCDATA)>"];
     ASSERT_OBJCEQ(node.name, @"foo");
-
 
     NSXMLDTD* dtd = [[[NSXMLDTD alloc] initWithContentsOfURL:[testBundle() URLForResource:@"PropertyList-1.0" withExtension:@"dtd"] options:0 error:nil] autorelease];
     dtd.name = @"plist";
@@ -344,41 +341,35 @@ TEST(NSXMLDocument, Dtd) {
     elementDecl.stringValue = @"(#PCDATA | array)*";
     ASSERT_OBJCEQ(elementDecl.stringValue, @"(#PCDATA | array)*");
 }
-//
-////TEST(NSXMLDocument, DocumentWithDTD) {
-////    NSXMLDocument* doc = [[NSXMLDocument alloc] initWithContentsOfUrl:@"NSXMLDTDTestData.xml" options:0];
-////    NSXMLDTD* dtd = doc.dtd;
-////    ASSERT_OBJCEQ(dtd.name, @"root");
-////
-////    NSXMLDTDNode* notation = [dtd notationDeclarationForName:@"myNotation"];
-////    ////[notation detach];
-////    ASSERT_OBJCEQ(notation.name, @"myNotation");
-////    ASSERT_OBJCEQ(notation.systemID, @"http://www.example.com");
-////
-////    do {
-////        try [doc validate];
-////    } catch {
-////        ASSERT_TRUE(false);
-////    }
-////
-////    NSXMLDTDNode* root = [dtd elementDeclarationForName:@"root"];
-////    root.stringValue = @"(#PCDATA)";
-////    do {
-////        [doc validate];
-////        ASSERT_TRUE_MSG(false, @"should have thrown");
-////    } catch let error as NSError {
-////        ASSERT_TRUE(error.code == XMLParser.ErrorCode.internalError.rawValue);
-////    } catch {
-////        ASSERT_TRUE(false);
-////    }
-////}
-////
-////TEST(NSXMLDocument, Dtd_attributes) {
-////    NSXMLDocument* doc = [[NSXMLDocument alloc] initWithContentsOfURL:@"NSXMLDTDTestData.xml" options:0 error:nil];
-////    NSXMLDTD* dtd = doc.dtd;
-////    NSXMLDTDNode* attrDecl = [dtd attributeDeclarationForName:@"print" elementName:@"foo"]!;
-////    ASSERT_TRUE(attrDecl.dtdKind == XML_ATTRIBUTE_ENUMERATION];
-////}
+
+TEST(NSXMLDocument, DocumentWithDTD) {
+    NSError* err = [[[NSError alloc] init] autorelease];
+    NSXMLDocument* doc = [[NSXMLDocument alloc] initWithContentsOfURL:[testBundle() URLForResource:@"NSXMLDTDTestData" withExtension:@"xml"] options:0 error:&err];
+    NSXMLDTD* dtd = doc.DTD;
+    ASSERT_OBJCEQ(dtd.name, @"root");
+
+    NSXMLDTDNode* notation = [dtd notationDeclarationForName:@"myNotation"];
+    ////[notation detach];
+    ASSERT_OBJCEQ(notation.name, @"myNotation");
+    ASSERT_OBJCEQ(notation.systemID, @"http://www.example.com");
+
+    [doc validateAndReturnError:&err];
+
+    //assert error not error
+
+    NSXMLDTDNode* root = [dtd elementDeclarationForName:@"root"];
+    root.stringValue = @"(#PCDATA)";
+
+    [doc validateAndReturnError:&err];
+    ASSERT_EQ(err.code, NSXMLParserInternalError);
+}
+
+TEST(NSXMLDocument, Dtd_attributes) {
+    NSXMLDocument* doc = [[NSXMLDocument alloc] initWithContentsOfURL:[testBundle() URLForResource:@"NSXMLDTDTestData" withExtension:@"xml"] options:0 error:nil];
+    NSXMLDTD* dtd = doc.DTD;
+    NSXMLDTDNode* attrDecl = [dtd attributeDeclarationForName:@"print" elementName:@"foo"];
+    ASSERT_TRUE(attrDecl.DTDKind == NSXMLAttributeEnumerationKind);
+}
 
 TEST(NSXMLNode, tests) {
     ASSERT_OBJCEQ([NSXMLNode prefixForName:@"pre:fix"], @"pre");

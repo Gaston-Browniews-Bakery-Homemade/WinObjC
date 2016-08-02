@@ -52,24 +52,35 @@
 }
 
 - (instancetype)initWithContentsOfURL:(NSURL*)url options:(NSUInteger)options error:(NSError**)error{
-return nil;
+    NSData* data = [[[NSData alloc] initWithContentsOfURL:url options:NSDataReadingMappedIfSafe error:error] autorelease];
+
+    if(data) {
+        return [self initWithData:data options:options error:error];
+    }
+    return nil;
 }
 
-- (NSXMLDocumentContentKind)documentContentKind{
-    return 1;
+- (NSXMLDocumentContentKind)documentContentKind {
+    int properties = _CFXMLDocProperties([self _getXmlNode]);
+
+    if((properties & _kCFXMLDocTypeHTML) != 0) {
+        return NSXMLDocumentHTMLKind;
+    }
+
+    return NSXMLDocumentXMLKind;
 }
 - (NSString*)version{
     return static_cast<NSString*>(_CFXMLDocVersion([self _getXmlNode]));
 }
+
 - (NSString*)characterEncoding{
-    return nil;
+     return static_cast<NSString*>(_CFXMLDocCharacterEncoding([self _getXmlNode]));
 }
-- (NSString*)MIMEType{
-    return nil;
-}
+
 - (BOOL)isStandalone{
-    return NO;
+    return (_CFXMLDocStandalone([self _getXmlNode]) ? YES : NO);
 }
+
 - (NSXMLElement*)rootElement{
     _CFXMLNodePtr rootPtr = _CFXMLDocRootElement([self _getXmlNode]);
 
@@ -79,17 +90,23 @@ return nil;
 
     return (NSXMLElement*)[NSXMLNode _objectNodeForNodePtr:rootPtr];
 }
+
 - (NSXMLDTD*)DTD{
-    return nil;
+    return [NSXMLDTD _objectNodeForNodePtr:_CFXMLDocDTD([self _getXmlNode])];
 }
+
 - (NSString*)URI{
     return nil;
 }
 
 - (void)setDocumentContentKind:(NSXMLDocumentContentKind)kind {
+    _CFXMLDocSetProperties([self _getXmlNode], kind);
 }
+
 - (void)setCharacterEncoding:(NSString*)encoding {
+    _CFXMLDocSetCharacterEncoding([self _getXmlNode], reinterpret_cast<const unsigned char*>([encoding UTF8String]));
 }
+
 - (void)setVersion:(NSString*)version {
     if([version isEqualToString:@"1.0"] || [version isEqualToString:@"1.1"]) {
         _CFXMLDocSetVersion([self _getXmlNode], reinterpret_cast<const unsigned char*>([version UTF8String]));
@@ -97,10 +114,11 @@ return nil;
         _CFXMLDocSetVersion([self _getXmlNode], nil);
     }
 }
-- (void)setMIMEType:(NSString*)mimeType {
-}
+
 - (void)setStandalone:(BOOL)flag {
+    _CFXMLDocSetStandalone([self _getXmlNode], flag);
 }
+
 - (void)setRootElement:(NSXMLElement*)element {
     if(element) {
         THROW_NS_IF_FALSE(E_INVALIDARG, ([element parent] == nil));
@@ -110,44 +128,72 @@ return nil;
 
     _CFXMLDocSetRootElement([self _getXmlNode], [element _getXmlNode]);
     [self _insertChild:element];
+}
 
-}
 - (void)setDTD:(NSXMLDTD*)dtd {
+    _CFXMLDTDPtr currDTD = _CFXMLDocDTD([self _getXmlNode]);
+    if(currDTD) {
+        if(_CFXMLNodeGetPrivateData(currDTD) != nil) {
+            [self _removeChild:([NSXMLDTD _objectNodeForNodePtr:currDTD])];
+        } else {
+            _CFXMLFreeDTD(currDTD);
+        }
+    }
+
+    if(dtd) {
+        _CFXMLDocSetDTD([self _getXmlNode], [dtd _getXmlNode]);
+        [self _insertChild:dtd];
+    } else {
+        _CFXMLDocSetDTD([self _getXmlNode], nil);
+    }
 }
+
 - (void)setURI:(NSString*)uri {
 }
 
 - (void)setChildren:(NSArray*)children {
-}
-- (void)addChild:(NSXMLNode*)child {
-}
-- (void)insertChild:(NSXMLNode*)child atIndex:(NSUInteger)index {
-}
-- (void)insertChildren:(NSArray*)children atIndex:(NSUInteger)index {
-}
-- (void)removeChildAtIndex:(NSUInteger)index {
-}
-- (void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode*)node {
+    [self _setChildren:children];
 }
 
-//Stub
+- (void)addChild:(NSXMLNode*)child {
+    [self _addChild:child];
+}
+
+- (void)insertChild:(NSXMLNode*)child atIndex:(NSUInteger)index {
+    [self _insertChild:child atIndex:index];
+}
+- (void)insertChildren:(NSArray*)children atIndex:(NSUInteger)index {
+    [self _insertChildren:children atIndex:index];
+}
+- (void)removeChildAtIndex:(NSUInteger)index {
+    [self _removeChildAtIndex:index];
+}
+- (void)replaceChildAtIndex:(NSUInteger)index withNode:(NSXMLNode*)node {
+    [self _replaceChildAtIndex:index withNode:node];
+}
+
 - (BOOL)validateAndReturnError:(NSError**)error {
-    return _CFXMLDocValidate([self _getXmlDoc], reinterpret_cast<CFErrorRef*>(error)) ? YES : NO;
+    return _CFXMLDocValidate([self _getXmlNode], reinterpret_cast<CFErrorRef*>(error)) ? YES : NO;
 }
 
 - (NSData*)XMLData {
-    return nil;
-}
-- (NSData*)XMLDataWithOptions:(NSUInteger)options {
-    return nil;
+    return [self XMLDataWithOptions:NSXMLNodeOptionsNone];
 }
 
+- (NSData*)XMLDataWithOptions:(NSUInteger)options {
+    NSString* string = [self XMLStringWithOptions:options];
+    return [string dataUsingEncoding:NSUTF8StringEncoding];
+}
+
+////stub
 - (id)objectByApplyingXSLT:(NSData*)xslt arguments:(NSDictionary*)arguments error:(NSError*)error {
     return nil;
 }
+////stub
 - (id)objectByApplyingXSLTAtURL:(NSURL*)url arguments:(NSDictionary*)arguments error:(NSError*)error {
     return nil;
 }
+////stub
 - (id)objectByApplyingXSLTString:(NSString*)string arguments:(NSDictionary*)arguments error:(NSError*)error {
     return nil;
 }
