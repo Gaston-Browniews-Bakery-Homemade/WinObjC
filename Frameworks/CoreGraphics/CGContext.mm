@@ -27,6 +27,7 @@
 #import <CoreGraphics/CGGradient.h>
 #import "CGColorSpaceInternal.h"
 #import "CGContextInternal.h"
+#import "CGPathInternal.h"
 
 #import <CFCppBase.h>
 
@@ -51,7 +52,8 @@ static inline D2D_RECT_F __CGRectToD2D_F(CGRect rect) {
 }
 
 struct __CGContextDrawingState {
-    // This is populated when the state is saved, and contains the D2D parameters that CG does not know.
+    // This is populated when the state is saved, and contains the D2D parameters
+    // that CG does not know.
     ComPtr<ID2D1DrawingStateBlock> d2dState{ nullptr };
 
     // Fills
@@ -97,7 +99,8 @@ struct __CGContextImpl {
 
     woc::unique_cf<CGMutablePathRef> currentPath{ nullptr };
 
-    // TODO(DH) GH#1070 evaluate these defaults; they should be set by context creators.
+    // TODO(DH) GH#1070 evaluate these defaults; they should be set by context
+    // creators.
     bool allowsAntialiasing = false;
     bool allowsFontSmoothing = false;
     bool allowsFontSubpixelPositioning = false;
@@ -109,7 +112,7 @@ struct __CGContextImpl {
     }
 };
 
-struct __CGContext: CoreFoundation::CppBase<__CGContext, __CGContextImpl> {
+struct __CGContext : CoreFoundation::CppBase<__CGContext, __CGContextImpl> {
     inline ComPtr<ID2D1RenderTarget>& RenderTarget() {
         return _impl.renderTarget;
     }
@@ -150,7 +153,8 @@ static void __CGContextInitWithRenderTarget(CGContextRef context, ID2D1RenderTar
     // Reference platform defaults:
     // * Fill  : fully transparent black
     // * Stroke: fully opaque black
-    // If a context does not support alpha, the default fill looks like fully opaque black.
+    // If a context does not support alpha, the default fill looks like fully
+    // opaque black.
     CGContextSetRGBFillColor(context, 0, 0, 0, 0);
     CGContextSetRGBStrokeColor(context, 0, 0, 0, 1);
 }
@@ -428,7 +432,8 @@ void CGContextClipToMask(CGContextRef context, CGRect dest, CGImageRef image) {
 #pragma region Colors - Stroke
 /**
  @Status Stub
- @Notes Since we are currently missing Color Space support, this will need to be implemented.
+ @Notes Since we are currently missing Color Space support, this will need to be
+ implemented.
 */
 void CGContextSetStrokeColor(CGContextRef context, const CGFloat* components) {
     UNIMPLEMENTED();
@@ -445,7 +450,8 @@ void CGContextSetStrokeColorWithColor(CGContextRef context, CGColorRef color) {
 
 /**
  @Status Stub
- @Notes Since we are currently missing Color Space support, this will need to be implemented.
+ @Notes Since we are currently missing Color Space support, this will need to be
+ implemented.
 */
 void CGContextSetStrokeColorSpace(CGContextRef pContext, CGColorSpaceRef colorSpace) {
     UNIMPLEMENTED();
@@ -483,7 +489,8 @@ void CGContextSetCMYKStrokeColor(CGContextRef context, CGFloat cyan, CGFloat mag
 #pragma region Colors - Fill
 /**
  @Status Stub
- @Notes Since we are currently missing Color Space support, this will need to be implemented.
+ @Notes Since we are currently missing Color Space support, this will need to be
+ implemented.
 */
 void CGContextSetFillColor(CGContextRef context, const CGFloat* components) {
     UNIMPLEMENTED();
@@ -500,7 +507,8 @@ void CGContextSetFillColorWithColor(CGContextRef context, CGColorRef color) {
 
 /**
  @Status Stub
- @Notes Since we are currently missing Color Space support, this will need to be implemented.
+ @Notes Since we are currently missing Color Space support, this will need to be
+ implemented.
 */
 void CGContextSetFillColorSpace(CGContextRef pContext, CGColorSpaceRef colorSpace) {
     UNIMPLEMENTED();
@@ -736,14 +744,14 @@ void CGContextFillEllipseInRect(CGContextRef context, CGRect rect) {
  @Status Interoperable
 */
 void CGContextBeginPath(CGContextRef context) {
-    UNIMPLEMENTED();
+    context->_impl.currentPath.reset(CGPathCreateMutable());
 }
 
 /**
  @Status Interoperable
 */
 void CGContextClosePath(CGContextRef context) {
-    UNIMPLEMENTED();
+    CGPathCloseSubpath(context->_impl.currentPath.get());
 }
 
 /**
@@ -766,7 +774,7 @@ void CGContextAddRects(CGContextRef context, const CGRect* rect, unsigned count)
  @Status Interoperable
 */
 void CGContextAddLineToPoint(CGContextRef context, CGFloat x, CGFloat y) {
-    UNIMPLEMENTED();
+    CGPathAddLineToPoint(context->_impl.currentPath.get(), nullptr /* transform from settings goes here */, x, y);
 }
 
 /**
@@ -787,7 +795,7 @@ void CGContextAddQuadCurveToPoint(CGContextRef context, CGFloat cpx, CGFloat cpy
  @Status Interoperable
 */
 void CGContextMoveToPoint(CGContextRef context, CGFloat x, CGFloat y) {
-    UNIMPLEMENTED();
+    CGPathMoveToPoint(context->_impl.currentPath.get(), nullptr /* transform from settings goes here */, x, y);
 }
 
 /**
@@ -817,8 +825,12 @@ void CGContextAddEllipseInRect(CGContextRef context, CGRect rect) {
 void CGContextAddPath(CGContextRef context, CGPathRef path) {
     // The Apple SDK docs imply that passing a NULL path is valid.
     // So avoid calling into the backing if NULL.
+    if (!context->_impl.currentPath.get()) {
+        context->_impl.currentPath.reset(CGPathCreateMutable());
+    }
+
     if (path) {
-        UNIMPLEMENTED();
+        CGPathAddPath(context->_impl.currentPath.get(), nullptr /* transform from settings goes here */, path);
     }
 }
 
@@ -826,8 +838,7 @@ void CGContextAddPath(CGContextRef context, CGPathRef path) {
  @Status Interoperable
 */
 bool CGContextIsPathEmpty(CGContextRef context) {
-    UNIMPLEMENTED();
-    return StubReturn();
+    return CGPathIsEmpty(context->_impl.currentPath.get());
 }
 
 /**
@@ -841,8 +852,7 @@ void CGContextReplacePathWithStrokedPath(CGContextRef context) {
  @Status Interoperable
 */
 CGRect CGContextGetPathBoundingBox(CGContextRef context) {
-    UNIMPLEMENTED();
-    return StubReturn();
+    return CGPathGetBoundingBox(context->_impl.currentPath.get());
 }
 
 /**
@@ -862,7 +872,11 @@ void CGContextAddLines(CGContextRef pContext, const CGPoint* pt, unsigned count)
  @Status Interoperable
 */
 void CGContextDrawPath(CGContextRef context, CGPathDrawingMode mode) {
-    UNIMPLEMENTED();
+    // Ensure that the path is closed.
+    context->_impl.currentPath->closePath();
+    __CGContextDrawGeometry(context, context->_impl.currentPath->_impl.pathGeometry.Get(), mode);
+
+    //__CGContextDrawGeometry(context, ID2D1Geometry* geometry, drawMode);
 }
 
 /**
@@ -1305,8 +1319,10 @@ void CGContextSynchronize(CGContextRef context) {
 }
 
 // TODO(DH) GH#1077 remove all of these internal functions.
-// TODO: functions below are not part of offical exports, but they are also exported
-// to be used by other framework components, we should consider moving them to a shared library
+// TODO: functions below are not part of offical exports, but they are also
+// exported
+// to be used by other framework components, we should consider moving them to a
+// shared library
 void CGContextClearToColor(CGContextRef context, CGFloat r, CGFloat g, CGFloat b, CGFloat a) {
     UNIMPLEMENTED();
 }
@@ -1358,11 +1374,12 @@ struct __CGBitmapContextImpl {
     woc::unique_cf<CGImageRef> image;
 };
 
-struct __CGBitmapContext : CoreFoundation::CppBase<__CGBitmapContext, __CGBitmapContextImpl, __CGContext> { };
+struct __CGBitmapContext : CoreFoundation::CppBase<__CGBitmapContext, __CGBitmapContextImpl, __CGContext> {};
 
 /**
  @Status Caveat
- @Notes Limited bitmap formats available. Decode, shouldInterpolate, intent parameters
+ @Notes Limited bitmap formats available. Decode, shouldInterpolate, intent
+ parameters
  and some byte orders ignored.
  */
 CGContextRef CGBitmapContextCreate(void* data,
@@ -1418,7 +1435,8 @@ void* CGBitmapContextGetData(CGContextRef context) {
 
 /**
  @Status Caveat
- @Notes Has no copy-on-write semantics; bitmap returned is the source bitmap representing
+ @Notes Has no copy-on-write semantics; bitmap returned is the source bitmap
+ representing
         the CGContext
 */
 CGImageRef CGBitmapContextCreateImage(CGContextRef context) {
