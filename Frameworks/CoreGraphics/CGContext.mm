@@ -130,9 +130,11 @@ struct __CGContext : CoreFoundation::CppBase<__CGContext, __CGContextImpl> {
     }
 
     inline ComPtr<ID2D1Factory> Factory() {
-        ComPtr<ID2D1Factory> factory;
-        _impl.renderTarget->GetFactory(&factory);
-        return factory;
+        // ComPtr<ID2D1Factory> factory;
+        //_impl.renderTarget->GetFactory(&factory);
+
+        return _GetD2DFactoryInstance();
+        // return factory;
     }
 };
 
@@ -618,8 +620,8 @@ static void __CGContextDrawGeometry(CGContextRef context, ID2D1Geometry* geometr
     }
 
     if (drawMode & kCGPathStroke) {
-        ComPtr<ID2D1Factory> factory;
-        deviceContext->GetFactory(&factory);
+        ComPtr<ID2D1Factory> factory = _GetD2DFactoryInstance();
+        // deviceContext->GetFactory(&factory);
 
         // TODO(DH): GH#1077 Do not recreate for every drawing operation
         ComPtr<ID2D1StrokeStyle> strokeStyle;
@@ -657,7 +659,8 @@ static void __CGContextDrawGeometry(CGContextRef context, ID2D1Geometry* geometr
         renderTarget->PopLayer();
     }
 
-    FAIL_FAST_IF_FAILED(deviceContext->EndDraw());
+    HRESULT hr = deviceContext->EndDraw();
+    // FAIL_FAST_IF_FAILED(deviceContext->EndDraw());
 }
 
 /**
