@@ -47,6 +47,9 @@
         // Unnecessary as close subpath will finish this line off but for the sake of consistency, have this here.
         CGPathAddLineToPoint(thepath, &transformation, 200, 35);
 
+        CGContextSetAllowsAntialiasing(currentContext, true);
+        CGContextSetShouldAntialias(currentContext, true);
+
         CGPathCloseSubpath(thepath);
         CGContextAddPath(currentContext, thepath);
         CGContextStrokePath(currentContext);

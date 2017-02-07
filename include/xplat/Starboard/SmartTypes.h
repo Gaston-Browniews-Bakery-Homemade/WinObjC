@@ -536,9 +536,9 @@ public:
         return AutoCF<T, CFLifetimeRetain>::detach();
     }
 
-    unique_cf<T>& operator=(T val) = delete;
-    unique_cf<T>& operator=(const unique_cf<T>& other) = delete;
-    unique_cf<T>& operator=(unique_cf<T>&& other) = delete;
+    //unique_cf<T>& operator=(T val) = delete;
+    //unique_cf<T>& operator=(const unique_cf<T>& other) = delete;
+    //unique_cf<T>& operator=(unique_cf<T>&& other) = delete;
 };
 
 template <typename T = CFTypeRef>

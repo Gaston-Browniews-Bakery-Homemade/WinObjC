@@ -115,3 +115,15 @@ TEXT_DRAW_TEST_F(CGContext, ShowTextAtPoint, WhiteBackgroundTest<PixelByPixelIma
     CGContextShowTextAtPoint(context, 25, 50, "TEST", 4);
 }
 #endif // WINOBJC
+
+// AA tests
+
+static 
+
+TEXT_DRAW_TEST_F(CGContext, ShowGlyphsAA, WhiteBackgroundTest<PixelByPixelImageComparator<PixelComparisonModeMask<>>>) {
+    CGContextRef context = GetDrawingContext();
+    std::vector<CGGlyph> glyphs{ __CreateGlyphs() };
+    __SetFontForContext(context);
+    CGContextSetTextPosition(context, 25, 50);
+    CGContextShowGlyphs(context, glyphs.data(), glyphs.size());
+}

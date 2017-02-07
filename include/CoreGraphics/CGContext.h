@@ -118,11 +118,11 @@ COREGRAPHICS_EXPORT void CGContextSetPatternPhase(CGContextRef c, CGSize phase);
 COREGRAPHICS_EXPORT void CGContextSetFillPattern(CGContextRef c, CGPatternRef pattern, const CGFloat* components);
 COREGRAPHICS_EXPORT void CGContextSetRenderingIntent(CGContextRef c, CGColorRenderingIntent intent) STUB_METHOD;
 
-COREGRAPHICS_EXPORT void CGContextSetShouldAntialias(CGContextRef c, bool shouldAntialias) STUB_METHOD;
+COREGRAPHICS_EXPORT void CGContextSetShouldAntialias(CGContextRef c, bool shouldAntialias);
 COREGRAPHICS_EXPORT void CGContextSetStrokePattern(CGContextRef c, CGPatternRef pattern, const CGFloat* components);
 
 COREGRAPHICS_EXPORT void CGContextSetBlendMode(CGContextRef c, CGBlendMode mode);
-COREGRAPHICS_EXPORT void CGContextSetAllowsAntialiasing(CGContextRef c, bool allowsAntialiasing) STUB_METHOD;
+COREGRAPHICS_EXPORT void CGContextSetAllowsAntialiasing(CGContextRef c, bool allowsAntialiasing);
 COREGRAPHICS_EXPORT void CGContextSetAllowsFontSmoothing(CGContextRef c, bool allowsFontSmoothing) STUB_METHOD;
 COREGRAPHICS_EXPORT void CGContextSetShouldSmoothFonts(CGContextRef c, bool shouldSmoothFonts) STUB_METHOD;
 COREGRAPHICS_EXPORT void CGContextSetAllowsFontSubpixelPositioning(CGContextRef c, bool allowsFontSubpixelPositioning) STUB_METHOD;
