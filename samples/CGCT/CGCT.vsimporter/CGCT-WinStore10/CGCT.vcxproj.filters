@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{5455b9b6-70b7-4450-ac37-aacb555b3f4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{25b92c35-65ea-4fdc-aa08-73ac539fcfb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CGCT">
+      <UniqueIdentifier>{E466C7AE-AC4E-49FE-A0CF-8D99B4F31320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CGCT\Base">
+      <UniqueIdentifier>{F46DE56F-7D1A-490E-AEED-49F76AEEF18E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CGCT\Supporting Files">
+      <UniqueIdentifier>{8A40103D-ECD1-469A-94A3-FD1F910AC5AC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Xcode Variable Files">
+      <UniqueIdentifier>{3643DFFB-8275-4C5B-A818-CC8329F912EA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="default.rd.xml" />
+    <AppxManifest Include="Package.appxmanifest" />
+    <None Include="CGCT_TemporaryKey.pfx" />
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <AssetCatalogCompile Include="..\..\CGCT\Assets.xcassets">
+      <Filter>CGCT</Filter>
+    </AssetCatalogCompile>
+    <ClInclude Include="..\..\CGCT\AppDelegate.h">
+      <Filter>CGCT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CGCT\PathDemoTableViewCell.h">
+      <Filter>CGCT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CGCT\ViewController.h">
+      <Filter>CGCT</Filter>
+    </ClInclude>
+    <ClangCompile Include="..\..\CGCT\AppDelegate.m">
+      <Filter>CGCT</Filter>
+    </ClangCompile>
+    <ClangCompile Include="..\..\CGCT\PathDemoTableViewCell.m">
+      <Filter>CGCT</Filter>
+    </ClangCompile>
+    <ClangCompile Include="..\..\CGCT\ViewController.m">
+      <Filter>CGCT</Filter>
+    </ClangCompile>
+    <ClangCompile Include="..\..\CGCT\main.m">
+      <Filter>CGCT\Supporting Files</Filter>
+    </ClangCompile>
+    <SBInfoPlistCopy Include="..\..\CGCT\Info.plist" />
+    <StoryboardCompile Include="..\..\CGCT\Base.lproj\LaunchScreen.storyboard">
+      <Filter>CGCT\Base</Filter>
+    </StoryboardCompile>
+    <StoryboardCompile Include="..\..\CGCT\Base.lproj\Main.storyboard">
+      <Filter>CGCT\Base</Filter>
+    </StoryboardCompile>
+    <Text Include="CGCT-Debug-xcvars.txt">
+      <Filter>Xcode Variable Files</Filter>
+    </Text>
+    <Text Include="CGCT-Release-xcvars.txt">
+      <Filter>Xcode Variable Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="App.xaml.cpp" />
+    <ClCompile Include="pch.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="App.xaml.h" />
+    <ClInclude Include="..\..\CGCT\CGView.h">
+      <Filter>CGCT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CGCT\DemoTableViewCell.h">
+      <Filter>CGCT</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClangCompile Include="..\..\CGCT\CGView.m">
+      <Filter>CGCT</Filter>
+    </ClangCompile>
+    <ClangCompile Include="..\..\CGCT\DemoTableViewCell.m">
+      <Filter>CGCT</Filter>
+    </ClangCompile>
+  </ItemGroup>
+</Project>
