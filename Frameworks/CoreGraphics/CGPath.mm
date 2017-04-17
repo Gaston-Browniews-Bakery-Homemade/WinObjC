@@ -727,7 +727,7 @@ void CGPathAddArcToPoint(
     }
 }
 
-static inline CGPoint _createCGPointOnAngle(CGFloat angle, CGFloat radius, int xOrigin, int yOrigin) {
+static inline CGPoint _createCGPointOnAngle(CGFloat angle, CGFloat radius, CGFloat xOrigin, CGFloat yOrigin) {
     return CGPointMake(xOrigin + radius * cos(angle), yOrigin + radius * sin(angle));
 }
 
@@ -1014,10 +1014,6 @@ void CGPathAddQuadCurveToPoint(CGMutablePathRef path, const CGAffineTransform* t
     FAIL_FAST_IF_FAILED(newSink->Close());
 
     FAIL_FAST_IF_FAILED(path->AddGeometryToPathWithTransformation(newPath.Get(), transform));
-
-    if (transform) {
-        endPoint = CGPointApplyAffineTransform(endPoint, *transform);
-    }
 }
 
 /**
