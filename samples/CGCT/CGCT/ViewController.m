@@ -46,6 +46,7 @@
     [_CGMenu setNeedsLayout];
     [_CGMenu layoutIfNeeded];
     [_stage setNeedsLayout];
+    [_stage setNeedsDisplay];
 
     CGRect newFrame = CGRectMake(0, 0, _stageBounds.size.width / 5.0, _stageBounds.size.height);
     _CGMenu.frame = newFrame;
@@ -83,6 +84,7 @@
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
     if (tableView == _CGMenu) {
         // Cast to story overview type, but for now just cast to our only story view.
+        _stage.backgroundColor = [UIColor colorWithRed:.1 green:.3 blue:1 alpha:1];
         [_stage updateCurrentDemo:[tableView cellForRowAtIndexPath:indexPath]];
         [_stage setNeedsDisplay];
     }

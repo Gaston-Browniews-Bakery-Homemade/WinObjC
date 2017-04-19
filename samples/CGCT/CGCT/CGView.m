@@ -10,19 +10,15 @@
 
 @implementation CGView {
     DemoTableViewCell* demoToDraw;
-    bool needsToDraw;
 };
 
 - (void)updateCurrentDemo:(DemoTableViewCell*)newDemo {
-    needsToDraw = true;
     demoToDraw = newDemo;
 }
 
 - (void)drawRect:(CGRect)pos {
-    if (needsToDraw) {
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        [demoToDraw drawDemoIntoContext:context withFrame:self.frame view:self];
-    }
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    [demoToDraw drawDemoIntoContext:context withFrame:self.frame view:self];
 }
 
 @end

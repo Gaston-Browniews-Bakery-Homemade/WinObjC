@@ -1059,7 +1059,7 @@ void CGContextAddPath(CGContextRef context, CGPathRef path) {
 }
 
 /**
- @Status Stub
+ @Status Interoperable
 */
 void CGContextReplacePathWithStrokedPath(CGContextRef context) {
     NOISY_RETURN_IF_NULL(context);

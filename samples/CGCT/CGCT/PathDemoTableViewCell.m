@@ -8,13 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import <CoreText/CoreText.h>
 #import "PathDemoTableViewCell.h"
 
 @implementation PathDemoTableViewCell
 
 - (void)drawDemoIntoContext:(CGContextRef)context withFrame:(CGRect)bounds view:(UIView*)view {
-    view.backgroundColor = [UIColor colorWithRed:.1 green:.3 blue:1 alpha:1];
-
     CGContextSaveGState(context);
 
     CGMutablePathRef light = CGPathCreateMutable();
@@ -63,43 +62,111 @@
     CGContextDrawPath(context, kCGPathFill);
     CGContextRestoreGState(context);
 
-    // draw tear shaped curve coming out of window. Create using paths.
+    // draw some dashed lines coming out as well
+    CGFloat dashes[] = { 5.0, 2.0 };
+    CGMutablePathRef dottedLine = CGPathCreateMutable();
+    CGPathMoveToPoint(dottedLine, NULL, bounds.size.width * .5, bounds.size.height * .9);
+    CGPathAddCurveToPoint(dottedLine,
+                          NULL,
+                          bounds.size.width * .4,
+                          bounds.size.height * .8,
+                          bounds.size.width * .3,
+                          bounds.size.height,
+                          bounds.size.width * .2,
+                          bounds.size.height * .9);
+    CGPathAddArc(dottedLine, NULL, bounds.size.width * .24, bounds.size.height * .87, bounds.size.width * .05, M_PI * .8, 0, false);
 
-    CGMutablePathRef tear = CGPathCreateMutable();
-    CGPathMoveToPoint(tear, NULL, .5 * bounds.size.width, .6 * bounds.size.height);
-    CGPathAddQuadCurveToPoint(tear,
-                              NULL,
-                              .4 * bounds.size.width,
-                              .7 * bounds.size.height,
-                              .45 * bounds.size.width,
-                              .8 * bounds.size.height);
+    CGAffineTransform dottedLineMirrorTransform = CGAffineTransformIdentity;
+    dottedLineMirrorTransform = CGAffineTransformScale(dottedLineMirrorTransform, -1, 1);
+    dottedLineMirrorTransform = CGAffineTransformTranslate(dottedLineMirrorTransform, -bounds.size.width, 0);
+    CGPathRef dottedLineMirror = CGPathCreateCopyByTransformingPath(dottedLine, &dottedLineMirrorTransform);
+    CGContextSaveGState(context);
+
+    CGContextSetLineDash(context, 0, dashes, 2);
+    CGContextSetLineWidth(context, 3);
+    CGContextAddPath(context, dottedLine);
+    CGContextAddPath(context, dottedLineMirror);
+
+    CGContextDrawPath(context, kCGPathStroke);
+
+    CGContextRestoreGState(context);
+
+    CGFloat colors[12] = { .3, .3, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, .3, .3, 1.0, 1.0 };
+
+    CGFloat locations[3] = { 0.0, 0.65, 1.0 };
+
+    CGColorSpaceRef baseSpace = CGColorSpaceCreateDeviceRGB();
+    CGGradientRef gradient = CGGradientCreateWithColorComponents(baseSpace, colors, locations, 3);
+    CGColorSpaceRelease(baseSpace);
+
+    CGContextSaveGState(context);
+    CGMutablePathRef gradientBox = CGPathCreateMutable();
+    CGPathMoveToPoint(gradientBox, NULL, bounds.size.width * .2, bounds.size.height * .6);
+    CGPathAddArcToPoint(gradientBox,
+                        NULL,
+                        bounds.size.width * .08,
+                        bounds.size.height * .7,
+                        bounds.size.width * .14,
+                        bounds.size.height * .9,
+                        bounds.size.width * .15);
     CGPathAddArc(
-        tear, NULL, .5 * bounds.size.width, .8 * bounds.size.height, .05 * bounds.size.width, M_PI, 3 * M_PI / 2, true); // add circle
-    CGPathAddQuadCurveToPoint(tear, NULL, .4 * bounds.size.width, .7 * bounds.size.height, .5 * bounds.size.width, .6 * bounds.size.height);
-    CGPathCloseSubpath(tear);
+        gradientBox, NULL, bounds.size.width * .06, bounds.size.height * .81, bounds.size.width * .05, M_PI * 1.9, M_PI * .4, false);
+    CGPathAddLineToPoint(gradientBox, NULL, bounds.size.width * .1, bounds.size.height * .86);
+    CGPathAddArc(
+        gradientBox, NULL, bounds.size.width * .06, bounds.size.height * .81, bounds.size.width * .09, M_PI * .4, M_PI * 1.9, true);
+    CGPathAddArc(
+        gradientBox, NULL, bounds.size.width * .21, bounds.size.height * .75, bounds.size.width * .07, M_PI * .9, M_PI * 1.32, false);
+    CGPathAddLineToPoint(gradientBox, NULL, bounds.size.width * .23, bounds.size.height * .65);
+    CGPathAddLineToPoint(gradientBox, NULL, bounds.size.width * .2, bounds.size.height * .64);
+    CGPathCloseSubpath(gradientBox);
+    CGContextAddPath(context, gradientBox);
 
-    CGRect tearCircle = CGRectMake(bounds.size.width * .5, bounds.size.height * .8, bounds.size.width * .03, bounds.size.height * .03);
-    CGPathAddEllipseInRect(tear, NULL, tearCircle);
+    CGAffineTransform reverseRibbon = CGAffineTransformIdentity;
+    reverseRibbon = CGAffineTransformScale(reverseRibbon, -1, 1);
+    reverseRibbon = CGAffineTransformTranslate(reverseRibbon, -bounds.size.width, 0);
+    CGPathRef reversedRibbon = CGPathCreateCopyByTransformingPath(gradientBox, &reverseRibbon);
+    CGContextAddPath(context, reversedRibbon);
 
-    CGRect test = CGRectMake(bounds.size.width * .445, bounds.size.height * .795, bounds.size.width * .005, bounds.size.height * .005);
-    CGPathAddRect(tear, NULL, test);
+    CGContextClip(context);
 
-    CGContextAddPath(context, tear);
-    CGContextSetRGBFillColor(context, 1, 0, 0, 1);
+    CGRect gradientRect = CGRectMake(bounds.size.width * .05, bounds.size.height * .6, bounds.size.width * .8, bounds.size.height * .4);
+    CGPoint startPoint = CGPointMake(CGRectGetMinX(gradientRect), CGRectGetMaxY(gradientRect));
+    CGPoint endPoint = CGPointMake(CGRectGetMaxX(gradientRect), CGRectGetMinY(gradientRect));
+
+    CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
+    CGGradientRelease(gradient), gradient = NULL;
+
+    CGContextRestoreGState(context);
+
     CGContextDrawPath(context, kCGPathFillStroke);
 
-    // CGPathaddEllipseInRect(); // Add circle in middle of tear x3 or 4
-    // copy it with a vertical flip and change the fill mode.
-    // CGPathSetFillMode??;
+    CGMutablePathRef textPath = CGPathCreateMutable();
+    CGPathAddRect(textPath, NULL, CGRectMake(bounds.size.width * .2, 0, bounds.size.width, bounds.size.height * .3));
 
-    // draw some dashed lines coming out as well
-    // CGFloat dashes[] = {
-    //
-    //}
-    // CGContextSetDashPattern
-    //
-    //	// draw a curved ribbon or two and fill with gradient
-    //	CGMutablePathRef ribbon = CGPathCreateMutable();
+    CGContextSaveGState(context);
+    CGContextScaleCTM(context, 1.0f, -1.0f);
+    CGContextTranslateCTM(context, 0, -bounds.size.height);
+
+    CTFontRef myCFFont = CTFontCreateWithName((__bridge CFStringRef) @"Segoe UI", 70.0, NULL);
+    CFAutorelease(myCFFont);
+
+    NSDictionary* attributesDict = [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)myCFFont,
+                                                                              (id)kCTFontAttributeName,
+                                                                              [UIColor blackColor].CGColor,
+                                                                              (id)kCTForegroundColorAttributeName,
+                                                                              nil];
+
+    CFAttributedStringRef attrString =
+        CFAttributedStringCreate(kCFAllocatorDefault, (__bridge CFStringRef) @"Core Demo", (__bridge CFDictionaryRef)attributesDict);
+    CFAutorelease(attrString);
+
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(attrString);
+    CFAutorelease(framesetter);
+
+    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), textPath, NULL);
+    CFAutorelease(frame);
+
+    CTFrameDraw(frame, context);
 }
 
 @end

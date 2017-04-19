@@ -1,23 +1,23 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Common">
-      <UniqueIdentifier>{5455b9b6-70b7-4450-ac37-aacb555b3f4c}</UniqueIdentifier>
+      <UniqueIdentifier>{a17bf4f0-e4f2-4f18-85cc-429e8a406a51}</UniqueIdentifier>
     </Filter>
     <Filter Include="Assets">
-      <UniqueIdentifier>{25b92c35-65ea-4fdc-aa08-73ac539fcfb6}</UniqueIdentifier>
+      <UniqueIdentifier>{16b98dba-2ed9-414a-8088-32e9074d9ab8}</UniqueIdentifier>
     </Filter>
     <Filter Include="CGCT">
-      <UniqueIdentifier>{E466C7AE-AC4E-49FE-A0CF-8D99B4F31320}</UniqueIdentifier>
+      <UniqueIdentifier>{6C363A0A-6053-426A-97D4-DC31D18E4400}</UniqueIdentifier>
     </Filter>
     <Filter Include="CGCT\Base">
-      <UniqueIdentifier>{F46DE56F-7D1A-490E-AEED-49F76AEEF18E}</UniqueIdentifier>
+      <UniqueIdentifier>{6F66F48B-DBF1-4193-9DE1-4A776FAA4814}</UniqueIdentifier>
     </Filter>
     <Filter Include="CGCT\Supporting Files">
-      <UniqueIdentifier>{8A40103D-ECD1-469A-94A3-FD1F910AC5AC}</UniqueIdentifier>
+      <UniqueIdentifier>{F5903FD6-BF3B-49D1-B084-494D99D28505}</UniqueIdentifier>
     </Filter>
     <Filter Include="Xcode Variable Files">
-      <UniqueIdentifier>{3643DFFB-8275-4C5B-A818-CC8329F912EA}</UniqueIdentifier>
+      <UniqueIdentifier>{DD847CD3-368E-42CC-ACF1-FB4B3D9EB43B}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +51,12 @@
     <ClInclude Include="..\..\CGCT\AppDelegate.h">
       <Filter>CGCT</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\CGCT\CGView.h">
+      <Filter>CGCT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\CGCT\DemoTableViewCell.h">
+      <Filter>CGCT</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\CGCT\PathDemoTableViewCell.h">
       <Filter>CGCT</Filter>
     </ClInclude>
@@ -58,6 +64,12 @@
       <Filter>CGCT</Filter>
     </ClInclude>
     <ClangCompile Include="..\..\CGCT\AppDelegate.m">
+      <Filter>CGCT</Filter>
+    </ClangCompile>
+    <ClangCompile Include="..\..\CGCT\CGView.m">
+      <Filter>CGCT</Filter>
+    </ClangCompile>
+    <ClangCompile Include="..\..\CGCT\DemoTableViewCell.m">
       <Filter>CGCT</Filter>
     </ClangCompile>
     <ClangCompile Include="..\..\CGCT\PathDemoTableViewCell.m">
@@ -82,33 +94,5 @@
     <Text Include="CGCT-Release-xcvars.txt">
       <Filter>Xcode Variable Files</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="App.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="App.xaml.cpp" />
-    <ClCompile Include="pch.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="App.xaml.h" />
-    <ClInclude Include="..\..\CGCT\CGView.h">
-      <Filter>CGCT</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\CGCT\DemoTableViewCell.h">
-      <Filter>CGCT</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClangCompile Include="..\..\CGCT\CGView.m">
-      <Filter>CGCT</Filter>
-    </ClangCompile>
-    <ClangCompile Include="..\..\CGCT\DemoTableViewCell.m">
-      <Filter>CGCT</Filter>
-    </ClangCompile>
   </ItemGroup>
 </Project>

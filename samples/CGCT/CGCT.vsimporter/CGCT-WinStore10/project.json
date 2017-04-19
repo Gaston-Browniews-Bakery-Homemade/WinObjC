@@ -1,17 +1,25 @@
 {
-  "dependencies": {
-    "WinObjC.Frameworks": "*",
-    "WinObjC.Language": "*"
-  },
-  "frameworks": {
-    "uap10.0": {
-      "imports": "native"
-    }
-  },
-  "runtimes": {
-    "win10-arm": {},
-    "win10-x86": {},
-    "win10-arm-aot": {},
-    "win10-x86-aot": {}
-  }
+    "dependencies":  {
+                         "WinObjC.Frameworks":  "0.2.170408-pr-20170418203817",
+                         "WinObjC.Language":  "*"
+                     },
+    "frameworks":  {
+                       "uap10.0":  {
+                                       "imports":  "native"
+                                   }
+                   },
+    "runtimes":  {
+                     "win10-arm":  {
+
+                                   },
+                     "win10-x86":  {
+
+                                   },
+                     "win10-arm-aot":  {
+
+                                       },
+                     "win10-x86-aot":  {
+
+                                       }
+                 }
 }

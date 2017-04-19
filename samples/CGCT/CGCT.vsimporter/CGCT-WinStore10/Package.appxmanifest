@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="71ed08ce-7837-4cdc-9df1-a76c100f7743"
+    Name="8bf1f869-8e9d-4cfa-8634-da377d9327d2"
     Publisher="CN=islandwood"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="71ed08ce-7837-4cdc-9df1-a76c100f7743" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="8bf1f869-8e9d-4cfa-8634-da377d9327d2" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>CGCT</DisplayName>
