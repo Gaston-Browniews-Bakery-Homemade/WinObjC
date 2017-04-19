@@ -1,10 +1,18 @@
+//******************************************************************************
 //
-//  PathDemoTableViewCell.m
-//  CGCT
+// Copyright (c) Microsoft. All rights reserved.
 //
-//  Created by Henry Fox on 12/04/2017.
-//  Copyright © 2017 Microsoft. All rights reserved.
+// This code is licensed under the MIT License (MIT).
 //
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+//******************************************************************************
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
@@ -25,6 +33,7 @@
     CGContextSetRGBFillColor(context, .7, .7, 1, .5);
     CGContextAddPath(context, light);
     CGContextDrawPath(context, kCGPathFill);
+    CGPathRelease(light);
 
     CGMutablePathRef windowTR = CGPathCreateMutable();
 
@@ -61,6 +70,10 @@
     CGContextSetShadow(context, CGSizeMake(10.f, 10.f), 1.0);
     CGContextDrawPath(context, kCGPathFill);
     CGContextRestoreGState(context);
+    CGPathRelease(windowTR);
+    CGPathRelease(windowTL);
+    CGPathRelease(windowBR);
+    CGPathRelease(windowBL);
 
     // draw some dashed lines coming out as well
     CGFloat dashes[] = { 5.0, 2.0 };
@@ -88,6 +101,8 @@
     CGContextAddPath(context, dottedLineMirror);
 
     CGContextDrawPath(context, kCGPathStroke);
+    CGPathRelease(dottedLine);
+    CGPathRelease(dottedLineMirror);
 
     CGContextRestoreGState(context);
 
@@ -100,31 +115,28 @@
     CGColorSpaceRelease(baseSpace);
 
     CGContextSaveGState(context);
-    CGMutablePathRef gradientBox = CGPathCreateMutable();
-    CGPathMoveToPoint(gradientBox, NULL, bounds.size.width * .2, bounds.size.height * .6);
-    CGPathAddArcToPoint(gradientBox,
+    CGMutablePathRef ribbon = CGPathCreateMutable();
+    CGPathMoveToPoint(ribbon, NULL, bounds.size.width * .2, bounds.size.height * .6);
+    CGPathAddArcToPoint(ribbon,
                         NULL,
                         bounds.size.width * .08,
                         bounds.size.height * .7,
                         bounds.size.width * .14,
                         bounds.size.height * .9,
                         bounds.size.width * .15);
-    CGPathAddArc(
-        gradientBox, NULL, bounds.size.width * .06, bounds.size.height * .81, bounds.size.width * .05, M_PI * 1.9, M_PI * .4, false);
-    CGPathAddLineToPoint(gradientBox, NULL, bounds.size.width * .1, bounds.size.height * .86);
-    CGPathAddArc(
-        gradientBox, NULL, bounds.size.width * .06, bounds.size.height * .81, bounds.size.width * .09, M_PI * .4, M_PI * 1.9, true);
-    CGPathAddArc(
-        gradientBox, NULL, bounds.size.width * .21, bounds.size.height * .75, bounds.size.width * .07, M_PI * .9, M_PI * 1.32, false);
-    CGPathAddLineToPoint(gradientBox, NULL, bounds.size.width * .23, bounds.size.height * .65);
-    CGPathAddLineToPoint(gradientBox, NULL, bounds.size.width * .2, bounds.size.height * .64);
-    CGPathCloseSubpath(gradientBox);
-    CGContextAddPath(context, gradientBox);
+    CGPathAddArc(ribbon, NULL, bounds.size.width * .06, bounds.size.height * .81, bounds.size.width * .05, M_PI * 1.9, M_PI * .4, false);
+    CGPathAddLineToPoint(ribbon, NULL, bounds.size.width * .1, bounds.size.height * .86);
+    CGPathAddArc(ribbon, NULL, bounds.size.width * .06, bounds.size.height * .81, bounds.size.width * .09, M_PI * .4, M_PI * 1.9, true);
+    CGPathAddArc(ribbon, NULL, bounds.size.width * .21, bounds.size.height * .75, bounds.size.width * .07, M_PI * .9, M_PI * 1.32, false);
+    CGPathAddLineToPoint(ribbon, NULL, bounds.size.width * .23, bounds.size.height * .65);
+    CGPathAddLineToPoint(ribbon, NULL, bounds.size.width * .2, bounds.size.height * .64);
+    CGPathCloseSubpath(ribbon);
+    CGContextAddPath(context, ribbon);
 
     CGAffineTransform reverseRibbon = CGAffineTransformIdentity;
     reverseRibbon = CGAffineTransformScale(reverseRibbon, -1, 1);
     reverseRibbon = CGAffineTransformTranslate(reverseRibbon, -bounds.size.width, 0);
-    CGPathRef reversedRibbon = CGPathCreateCopyByTransformingPath(gradientBox, &reverseRibbon);
+    CGPathRef reversedRibbon = CGPathCreateCopyByTransformingPath(ribbon, &reverseRibbon);
     CGContextAddPath(context, reversedRibbon);
 
     CGContextClip(context);
@@ -138,16 +150,20 @@
 
     CGContextRestoreGState(context);
 
-    CGContextDrawPath(context, kCGPathFillStroke);
+    CGContextAddPath(context, ribbon);
+    CGContextAddPath(context, reversedRibbon);
+    CGContextDrawPath(context, kCGPathStroke);
+    CGPathRelease(ribbon);
+    CGPathRelease(reversedRibbon);
 
     CGMutablePathRef textPath = CGPathCreateMutable();
     CGPathAddRect(textPath, NULL, CGRectMake(bounds.size.width * .2, 0, bounds.size.width, bounds.size.height * .3));
 
     CGContextSaveGState(context);
     CGContextScaleCTM(context, 1.0f, -1.0f);
-    CGContextTranslateCTM(context, 0, -bounds.size.height);
+    CGContextTranslateCTM(context, bounds.size.width * .25, -bounds.size.height);
 
-    CTFontRef myCFFont = CTFontCreateWithName((__bridge CFStringRef) @"Segoe UI", 70.0, NULL);
+    CTFontRef myCFFont = CTFontCreateWithName((__bridge CFStringRef) @"Segoe UI", bounds.size.height * .1, NULL);
     CFAutorelease(myCFFont);
 
     NSDictionary* attributesDict = [NSDictionary dictionaryWithObjectsAndKeys:(__bridge id)myCFFont,
@@ -167,6 +183,7 @@
     CFAutorelease(frame);
 
     CTFrameDraw(frame, context);
+    CGPathRelease(textPath);
 }
 
 @end

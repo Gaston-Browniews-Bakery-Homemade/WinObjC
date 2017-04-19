@@ -1,10 +1,18 @@
+//******************************************************************************
 //
-//  ViewController.m
-//  CGCT
+// Copyright (c) Microsoft. All rights reserved.
 //
-//  Created by Henry Fox on 11/04/2017.
-//  Copyright © 2017 Microsoft. All rights reserved.
+// This code is licensed under the MIT License (MIT).
 //
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+//******************************************************************************
 
 #import "ViewController.h"
 #import "PathDemoTableViewCell.h"
@@ -26,17 +34,6 @@
     return YES;
 }
 
-- (void)loadView {
-    [super loadView];
-
-    //[_stage.topAnchor constraintEqualToAnchor : self.view.topAnchor].active = YES;
-    //[_stage.bottomAnchor constraintEqualToAnchor : self.view.bottomAnchor].active = YES;
-    //[_stage.leftAnchor constraintEqualToAnchor : self.view.leftAnchor].active = YES;
-    //[_stage.rightAnchor constraintEqualToAnchor : self.view.rightAnchor].active = YES;
-    //
-    //[_CGMenu.leftAnchor constraintEqualToAnchor : self.view.leftAnchor].active = YES;
-}
-
 - (void)viewWillLayoutSubviews {
     _stageBounds = self.view.bounds;
 }
@@ -48,14 +45,15 @@
     [_stage setNeedsLayout];
     [_stage setNeedsDisplay];
 
-    CGRect newFrame = CGRectMake(0, 0, _stageBounds.size.width / 5.0, _stageBounds.size.height);
-    _CGMenu.frame = newFrame;
+    CGRect newMenuFrame = CGRectMake(0, 0, _stageBounds.size.width / 5.0, _stageBounds.size.height);
+    _CGMenu.frame = newMenuFrame;
 
     CGFloat stageSize = _stageBounds.size.width / 5 * 4;
     if (stageSize > _stageBounds.size.height) {
         stageSize = _stageBounds.size.height;
     }
-    CGRect newStageFrame = CGRectMake(_stageBounds.size.width / 5.0, 0, stageSize, stageSize);
+    CGRect newStageFrame =
+        CGRectMake(_stageBounds.size.width / 5.0, _stageBounds.size.height / 2.0 - stageSize / 2.0, stageSize, stageSize);
     _stage.frame = newStageFrame;
 }
 
@@ -83,7 +81,6 @@
 
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath {
     if (tableView == _CGMenu) {
-        // Cast to story overview type, but for now just cast to our only story view.
         _stage.backgroundColor = [UIColor colorWithRed:.1 green:.3 blue:1 alpha:1];
         [_stage updateCurrentDemo:[tableView cellForRowAtIndexPath:indexPath]];
         [_stage setNeedsDisplay];
@@ -91,29 +88,22 @@
 }
 
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section {
-    // In reality, we want to keep track of an array of the actual CellViewControllers
     return 1;
 }
 
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(nonnull NSIndexPath*)indexPath {
     if (tableView == _CGMenu) {
-        // use const
         UITableViewCell* aCell = [tableView dequeueReusableCellWithIdentifier:@"CGStory1"];
         if (aCell == nil) {
             aCell = [[PathDemoTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CGStory1"];
         }
         aCell.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
-        aCell.textLabel.text = @"CGPathDemo1";
+        aCell.textLabel.text = @"CoreDemo1";
 
         return aCell;
     }
 
     return nil;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
