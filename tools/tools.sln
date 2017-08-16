@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 15.0.0.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{ADC73541-2814-4B0C-9CEA-7EB4C971FC01}"
 	ProjectSection(SolutionItems) = preProject
@@ -117,6 +117,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "winmd2objc\UnitTests\UnitTests.vcxproj", "{1782D50C-E6B5-4499-90B6-B72AED2FBEDA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "winmd2objc", "winmd2objc", "{8AC7F02F-7384-4D36-9F88-4EC1FEC328E5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libdispatch", "..\deps\3rdparty\libdispatch\build\libdispatch.vcxproj", "{70819C7C-DF0D-4AE5-8667-648BBC257812}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -591,6 +593,18 @@ Global
 		{1782D50C-E6B5-4499-90B6-B72AED2FBEDA}.Release|x64.Build.0 = Release|x64
 		{1782D50C-E6B5-4499-90B6-B72AED2FBEDA}.Release|x86.ActiveCfg = Release|Win32
 		{1782D50C-E6B5-4499-90B6-B72AED2FBEDA}.Release|x86.Build.0 = Release|Win32
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Debug|ARM.ActiveCfg = Debug|ARM
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Debug|ARM.Build.0 = Debug|ARM
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Debug|x64.ActiveCfg = Debug|Win32
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Debug|x86.ActiveCfg = Debug|Win32
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Debug|x86.Build.0 = Debug|Win32
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Release|Any CPU.ActiveCfg = Release|Win32
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Release|ARM.ActiveCfg = Release|ARM
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Release|ARM.Build.0 = Release|ARM
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Release|x64.ActiveCfg = Release|Win32
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Release|x86.ActiveCfg = Release|Win32
+		{70819C7C-DF0D-4AE5-8667-648BBC257812}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -645,5 +659,6 @@ Global
 		{054BBEBA-5E79-4256-B7A6-360AA4363526} = {8AC7F02F-7384-4D36-9F88-4EC1FEC328E5}
 		{1782D50C-E6B5-4499-90B6-B72AED2FBEDA} = {8AC7F02F-7384-4D36-9F88-4EC1FEC328E5}
 		{8AC7F02F-7384-4D36-9F88-4EC1FEC328E5} = {8089CE15-A7CF-4E94-B327-01DF8DA3D7B6}
+		{70819C7C-DF0D-4AE5-8667-648BBC257812} = {2192E7B7-0B7A-4B68-8EBE-B21F9E8DEC2A}
 	EndGlobalSection
 EndGlobal

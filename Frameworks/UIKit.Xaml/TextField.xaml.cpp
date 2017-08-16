@@ -36,15 +36,16 @@ unsigned int TextField::c_borderCornerRadius = 8;
 
 Platform::Boolean TextField::s_dependencyPropertiesRegistered = false;
 
-template <typename T>
-T TextField::FindTemplateChild(FrameworkElement^ source, Platform::String^ name) {
-    T target = nullptr;
+static FrameworkElement^ FindTemplateChild(FrameworkElement^ source, Platform::String^ name) {
+//template <typename T>
+//T TextField::FindTemplateChild(FrameworkElement^ source, Platform::String^ name) {
+    FrameworkElement^ target = nullptr;
     if (source) {
         unsigned int count = VisualTreeHelper::GetChildrenCount(source);
         if (count > 0) {
             auto templateRoot = dynamic_cast<FrameworkElement^>(VisualTreeHelper::GetChild(source, 0));
             if (templateRoot) {
-                target = dynamic_cast<T>(templateRoot->FindName(name));
+                target = dynamic_cast<FrameworkElement^>(templateRoot->FindName(name));
             }
         }
     }
@@ -352,12 +353,12 @@ void TextField::_SetTextVerticalAlignment() {
     // to hold normal text/password content and placeholder content
     // TextBox control template can be found at https://msdn.microsoft.com/en-us/library/windows/apps/mt299154.aspx
     // PasswordBox control template can be found at https://msdn.microsoft.com/en-us/library/dd334412(v=vs.95).aspx
-    auto target = FindTemplateChild<FrameworkElement^>(_backingControl, "ContentElement");
+    FrameworkElement^ target = FindTemplateChild(_backingControl, "ContentElement");
     if (target) {
         target->VerticalAlignment = VerticalTextAlignment;
     }
 
-    target = FindTemplateChild<FrameworkElement^>(_backingControl, "PlaceholderTextContentPresenter");
+    target = FindTemplateChild(_backingControl, "PlaceholderTextContentPresenter");
     if (target) {
         target->VerticalAlignment = VerticalTextAlignment;
     }

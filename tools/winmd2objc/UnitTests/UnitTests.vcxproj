@@ -89,7 +89,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\include;$(WINOBJC_SDK_ROOT)\tests\frameworks\include;$(WINOBJC_SDK_ROOT)\tests\frameworks\gtest;$(WINOBJC_SDK_ROOT)\tests\frameworks\gtest\include;$(MSBuildThisFileDirectory);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(WINOBJC_SDK_ROOT)\tests\frameworks\include;$(WINOBJC_SDK_ROOT)\tests\frameworks\gtest;$(WINOBJC_SDK_ROOT)\tests\frameworks\gtest\include;$(MSBuildThisFileDirectory);%(AdditionalIncludeDirectories);C:\Program Files (x86)\Windows Kits\NETFXSDK\4.7\Include\um;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
