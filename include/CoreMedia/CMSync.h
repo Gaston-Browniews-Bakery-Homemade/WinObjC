@@ -16,6 +16,7 @@
 
 #pragma once
 
+#import <Foundation/NSOperationQueue.h>
 #import <CoreMedia/CoreMediaExport.h>
 #import <CoreMedia/CMTime.h>
 #import <CoreFoundation/CFRunLoop.h>
