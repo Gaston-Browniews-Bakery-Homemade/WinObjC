@@ -180,6 +180,133 @@ dispatch_async_f(dispatch_queue_t queue,
 	dispatch_function_t work);
 
 /*!
+ * @function dispatch_barrier_async
+ *
+ * @abstract
+ * Submits a barrier block for asynchronous execution on a dispatch queue.
+ *
+ * @discussion
+ * Submits a block to a dispatch queue like dispatch_async(), but marks that
+ * block as a barrier (relevant only on DISPATCH_QUEUE_CONCURRENT queues).
+ *
+ * See dispatch_async() for details.
+ *
+ * @param queue
+ * The target dispatch queue to which the block is submitted.
+ * The system will hold a reference on the target queue until the block
+ * has finished.
+ * The result of passing NULL in this parameter is undefined.
+ *
+ * @param block
+ * The block to submit to the target dispatch queue. This function performs
+ * Block_copy() and Block_release() on behalf of callers.
+ * The result of passing NULL in this parameter is undefined.
+ */
+
+#ifdef __BLOCKS__
+__OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_4_0)
+DISPATCH_EXPORT DISPATCH_NONNULL_ALL DISPATCH_NOTHROW
+void
+dispatch_barrier_async(dispatch_queue_t queue, dispatch_block_t block);
+#endif
+
+/*!
+ * @function dispatch_barrier_async_f
+ *
+ * @abstract
+ * Submits a barrier function for asynchronous execution on a dispatch queue.
+ *
+ * @discussion
+ * Submits a function to a dispatch queue like dispatch_async_f(), but marks
+ * that function as a barrier (relevant only on DISPATCH_QUEUE_CONCURRENT
+ * queues).
+ *
+ * See dispatch_async_f() for details.
+ *
+ * @param queue
+ * The target dispatch queue to which the function is submitted.
+ * The system will hold a reference on the target queue until the function
+ * has returned.
+ * The result of passing NULL in this parameter is undefined.
+ *
+ * @param context
+ * The application-defined context parameter to pass to the function.
+ *
+ * @param work
+ * The application-defined function to invoke on the target queue. The first
+ * parameter passed to this function is the context provided to
+ * dispatch_barrier_async_f().
+ * The result of passing NULL in this parameter is undefined.
+ */
+
+__OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_4_0)
+DISPATCH_EXPORT DISPATCH_NONNULL1 DISPATCH_NONNULL3 DISPATCH_NOTHROW
+void
+dispatch_barrier_async_f(dispatch_queue_t queue,
+    void *_Nullable context,
+    dispatch_function_t work);
+
+/*!
+ * @function dispatch_barrier_sync_f
+ *
+ * @abstract
+ * Submits a barrier function for synchronous execution on a dispatch queue.
+ *
+ * @discussion
+ * Submits a function to a dispatch queue like dispatch_sync_f(), but marks that
+ * fuction as a barrier (relevant only on DISPATCH_QUEUE_CONCURRENT queues).
+ *
+ * See dispatch_sync_f() for details.
+ *
+ * @param queue
+ * The target dispatch queue to which the function is submitted.
+ * The result of passing NULL in this parameter is undefined.
+ *
+ * @param context
+ * The application-defined context parameter to pass to the function.
+ *
+ * @param work
+ * The application-defined function to invoke on the target queue. The first
+ * parameter passed to this function is the context provided to
+ * dispatch_barrier_sync_f().
+ * The result of passing NULL in this parameter is undefined.
+ */
+
+__OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_4_0)
+DISPATCH_EXPORT DISPATCH_NONNULL1 DISPATCH_NONNULL3 DISPATCH_NOTHROW
+void
+dispatch_barrier_sync_f(dispatch_queue_t queue,
+    void *_Nullable context,
+    dispatch_function_t work);
+
+/*!
+ * @function dispatch_barrier_sync
+ *
+ * @abstract
+ * Submits a barrier block for synchronous execution on a dispatch queue.
+ *
+ * @discussion
+ * Submits a block to a dispatch queue like dispatch_sync(), but marks that
+ * block as a barrier (relevant only on DISPATCH_QUEUE_CONCURRENT queues).
+ *
+ * See dispatch_sync() for details.
+ *
+ * @param queue
+ * The target dispatch queue to which the block is submitted.
+ * The result of passing NULL in this parameter is undefined.
+ *
+ * @param block
+ * The block to be invoked on the target dispatch queue.
+ * The result of passing NULL in this parameter is undefined.
+ */
+#ifdef __BLOCKS__
+__OSX_AVAILABLE_STARTING(__MAC_10_6, __IPHONE_4_0)
+DISPATCH_EXPORT DISPATCH_NONNULL_ALL DISPATCH_NOTHROW
+void
+dispatch_barrier_sync(dispatch_queue_t queue, dispatch_block_t block);
+#endif
+
+/*!
  * @function dispatch_sync
  *
  * @abstract
@@ -594,4 +721,100 @@ dispatch_get_current_thread_queue();
 
 __DISPATCH_END_DECLS
 
+#endif
+
+/*!
+* @function dispatch_queue_set_specific
+*
+* @abstract
+* Associates a subsystem-specific context with a dispatch queue, for a key
+* unique to the subsystem.
+*
+* @discussion
+* The specified destructor will be invoked with the context on the default
+* priority global concurrent queue when a new context is set for the same key,
+* or after all references to the queue have been released.
+*
+* @param queue
+* The dispatch queue to modify.
+* The result of passing NULL in this parameter is undefined.
+*
+* @param key
+* The key to set the context for, typically a pointer to a static variable
+* specific to the subsystem. Keys are only compared as pointers and never
+* dereferenced. Passing a string constant directly is not recommended.
+* The NULL key is reserved and attempts to set a context for it are ignored.
+*
+* @param context
+* The new subsystem-specific context for the object. This may be NULL.
+*
+* @param destructor
+* The destructor function pointer. This may be NULL and is ignored if context
+* is NULL.
+*/
+#ifdef __BLOCKS__
+__OSX_AVAILABLE_STARTING(__MAC_10_7, __IPHONE_5_0)
+DISPATCH_EXPORT DISPATCH_NONNULL1 DISPATCH_NOTHROW
+void
+dispatch_queue_set_specific(dispatch_queue_t queue, const void *key,
+    void *_Nullable context, dispatch_function_t _Nullable destructor);
+#endif
+
+/*!
+* @function dispatch_queue_get_specific
+*
+* @abstract
+* Returns the subsystem-specific context associated with a dispatch queue, for
+* a key unique to the subsystem.
+*
+* @discussion
+* Returns the context for the specified key if it has been set on the specified
+* queue.
+*
+* @param queue
+* The dispatch queue to query.
+* The result of passing NULL in this parameter is undefined.
+*
+* @param key
+* The key to get the context for, typically a pointer to a static variable
+* specific to the subsystem. Keys are only compared as pointers and never
+* dereferenced. Passing a string constant directly is not recommended.
+*
+* @result
+* The context for the specified key or NULL if no context was found.
+*/
+#ifdef __BLOCKS__
+__OSX_AVAILABLE_STARTING(__MAC_10_7, __IPHONE_5_0)
+DISPATCH_EXPORT DISPATCH_NONNULL1 DISPATCH_PURE DISPATCH_WARN_RESULT
+DISPATCH_NOTHROW
+void *_Nullable
+dispatch_queue_get_specific(dispatch_queue_t queue, const void *key);
+#endif
+
+/*!
+* @function dispatch_get_specific
+*
+* @abstract
+* Returns the current subsystem-specific context for a key unique to the
+* subsystem.
+*
+* @discussion
+* When called from a block executing on a queue, returns the context for the
+* specified key if it has been set on the queue, otherwise returns the result
+* of dispatch_get_specific() executed on the queue's target queue or NULL
+* if the current queue is a global concurrent queue.
+*
+* @param key
+* The key to get the context for, typically a pointer to a static variable
+* specific to the subsystem. Keys are only compared as pointers and never
+* dereferenced. Passing a string constant directly is not recommended.
+*
+* @result
+* The context for the specified key or NULL if no context was found.
+*/
+#ifdef __BLOCKS__
+__OSX_AVAILABLE_STARTING(__MAC_10_7, __IPHONE_5_0)
+DISPATCH_EXPORT DISPATCH_PURE DISPATCH_WARN_RESULT DISPATCH_NOTHROW
+void *_Nullable
+dispatch_get_specific(const void *key);
 #endif
