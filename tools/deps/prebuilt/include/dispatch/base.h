@@ -84,6 +84,7 @@ typedef union {
 	struct dispatch_source_s *_ds;
 	struct dispatch_source_attr_s *_dsa;
 	struct dispatch_semaphore_s *_dsema;
+	struct dispatch_queue_specific_list_s *_dqsl;
 } dispatch_object_t;
 
 DISPATCH_INLINE dispatch_object_t as_do(void* v)
