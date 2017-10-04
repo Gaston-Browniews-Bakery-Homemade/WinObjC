@@ -82,13 +82,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>$(SolutionDir)obj\$(Platform)\$(TargetOsAndVersion)\$(Configuration)\</IntDir>
     <IncludePath>.;$(IncludePath)</IncludePath>
-    
     <TargetName>libdispatch</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <IntDir>$(SolutionDir)obj\$(Platform)\$(TargetOsAndVersion)\$(Configuration)\</IntDir>
     <IncludePath>.;$(IncludePath)</IncludePath>
-    
     <TargetName>libdispatch</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -100,13 +98,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>$(SolutionDir)obj\$(Platform)\$(TargetOsAndVersion)\$(Configuration)\</IntDir>
     <IncludePath>.;$(IncludePath)</IncludePath>
-    
     <TargetName>libdispatch</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <IntDir>$(SolutionDir)obj\$(Platform)\$(TargetOsAndVersion)\$(Configuration)\</IntDir>
     <IncludePath>.;$(IncludePath)</IncludePath>
-    
     <TargetName>libdispatch</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -126,7 +122,7 @@
       <LargeAddressAware>true</LargeAddressAware>
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
       <AdditionalDependencies>libobjc2.lib;mincore.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"$(WINOBJC_SDK_ROOT)\build\$(Platform)\$(Configuration)\Universal Windows"</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>"$(WINOBJC_SDK_ROOT)\build\$(Platform)\$(Configuration)\Universal Windows";"$(WINOBJC_SDK_ROOT)\tools\deps\prebuilt\Universal Windows\x86\$(Configuration)"</AdditionalLibraryDirectories>
     </Link>
     <ClangCompile>
       <UserIncludePaths>..</UserIncludePaths>
@@ -150,7 +146,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <LargeAddressAware>true</LargeAddressAware>
       <AdditionalDependencies>libobjc2.lib;mincore.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"$(WINOBJC_SDK_ROOT)\build\$(Platform)\$(Configuration)\Universal Windows"</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>"$(WINOBJC_SDK_ROOT)\build\$(Platform)\$(Configuration)\Universal Windows";"$(WINOBJC_SDK_ROOT)\tools\deps\prebuilt\Universal Windows\$(Platform)\$(Configuration)"</AdditionalLibraryDirectories>
     </Link>
     <ClangCompile>
       <UserIncludePaths>..</UserIncludePaths>
@@ -180,7 +176,7 @@
       <LargeAddressAware>true</LargeAddressAware>
       <ImageHasSafeExceptionHandlers>true</ImageHasSafeExceptionHandlers>
       <AdditionalDependencies>libobjc2.lib;mincore.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"$(WINOBJC_SDK_ROOT)\build\$(Platform)\$(Configuration)\Universal Windows"</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>"$(WINOBJC_SDK_ROOT)\build\$(Platform)\$(Configuration)\Universal Windows";"$(WINOBJC_SDK_ROOT)\tools\deps\prebuilt\Universal Windows\x86\$(Configuration)"</AdditionalLibraryDirectories>
     </Link>
     <ClangCompile>
       <UserIncludePaths>..</UserIncludePaths>
@@ -210,7 +206,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <LargeAddressAware>true</LargeAddressAware>
       <AdditionalDependencies>libobjc2.lib;mincore.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"$(WINOBJC_SDK_ROOT)\build\$(Platform)\$(Configuration)\Universal Windows"</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>"$(WINOBJC_SDK_ROOT)\build\$(Platform)\$(Configuration)\Universal Windows";"$(WINOBJC_SDK_ROOT)\tools\deps\prebuilt\Universal Windows\$(Platform)\$(Configuration)"</AdditionalLibraryDirectories>
     </Link>
     <ClangCompile>
       <UserIncludePaths>..</UserIncludePaths>
@@ -237,6 +233,7 @@
     <ClangCompile Include="..\src\source.c" />
     <ClangCompile Include="..\src\source_kevent.c" />
     <ClangCompile Include="..\src\time.c" />
+    <ClCompile Include="..\platform\windows\pthread.c" />
     <ClCompile Include="..\platform\windows\pthread_workqueue_winrt.cpp" />
     <ClangCompile Include="..\src\apply.c" />
     <ClangCompile Include="..\src\benchmark.c" />
@@ -249,7 +246,6 @@
     <ClangCompile Include="..\src\shims\mach.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-
   <PropertyGroup>
     <PrebuiltPath Condition="'$(PrebuiltPath)' == ''">$(WINOBJC_SDK_ROOT)\deps\prebuilt\Universal Windows\$(PlatformTarget)\$(Configuration)\\</PrebuiltPath>
   </PropertyGroup>
