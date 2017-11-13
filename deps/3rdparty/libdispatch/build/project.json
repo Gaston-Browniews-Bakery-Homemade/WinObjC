@@ -1,7 +1,7 @@
 {
   "dependencies": {
     //"WinObjC.Language": "*"
-    "WinObjC.Language": "0.2.170610-pr-20171113065427"
+    "WinObjC.Language": "0.2.170610-pr-20171113211234"
   },
   "frameworks": {
     "uap10.0": {

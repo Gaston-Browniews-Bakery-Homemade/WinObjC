@@ -1985,20 +1985,7 @@ dispatch_after_f(dispatch_time_t when, dispatch_queue_t queue, void *ctxt, void(
 	dispatch_resume(as_do(ds));
 }
 
-/*
-DISPATCH_VTABLE_INSTANCE(queue_specific_queue,
-    .do_type = DISPATCH_QUEUE_SPECIFIC_TYPE,
-    .do_kind = "queue-context",
-    .do_dispose = _dispatch_queue_specific_queue_dispose,
-    .do_push = (void *)_dispatch_queue_push,
-    .do_invoke = (void *)_dispatch_queue_invoke,
-    .do_wakeup = (void *)_dispatch_queue_wakeup,
-    .do_debug = (void *)dispatch_queue_debug,
-);
-*/
-
-
-static void _dispatch_queue_init_specific(dispatch_queue_t dq) {
+static void _dispatch_queue_init_specific_list(dispatch_queue_t dq) {
     dispatch_queue_specific_list_t dqsq;
     dqsq = calloc(1, sizeof(struct dispatch_queue_specific_list_s));
     _dispatch_queue_init(dqsq);
@@ -2007,22 +1994,20 @@ static void _dispatch_queue_init_specific(dispatch_queue_t dq) {
 }
 
 static void _dispatch_queue_insert_specific(dispatch_queue_t dq, dispatch_queue_specific_t dqs) {
-    // step over tree using the foreach
     dispatch_queue_specific_list_t dqsl = dq->dq_specific_q;
-    // add this to the end of the list
 	dispatch_queue_specific_t var;
+
     TAILQ_FOREACH(var, &dqsl->contextList, specific) {
         if (var->key == dqs->key) {
-            // call destructor on tailq, remove from list
             if(var->destructor) {
-                var->destructor;
+                var->destructor(NULL);
             }
 
-            // If a context exists for this key, simply update the context
+            // If a context exists for this key, simply update the context on that specific
             if(dqs->context) {
                 var->context = dqs->context;
                 var->destructor = dqs->destructor;
-            } else { //Otherwise, remove everything
+            } else {
                 TAILQ_REMOVE(&dqsl->contextList, var, specific);
                 free(var);
             }
@@ -2030,7 +2015,7 @@ static void _dispatch_queue_insert_specific(dispatch_queue_t dq, dispatch_queue_
             return;
         }
     }
-    // If we got here, there is no matching context, insert it at the end using helper
+
     TAILQ_INSERT_TAIL(&dqsl->contextList, dqs, specific);
 }
 
@@ -2043,39 +2028,18 @@ void dispatch_queue_set_specific(dispatch_queue_t queue, const void *key, void *
     specific->context = context;
     specific->destructor = destructor;
 
-    // If this dispatch queue's specific list has not yet been initialized
+    // Delayed initialization
     if (slowpath(!queue->dq_specific_q)) {
-        _dispatch_queue_init_specific(queue);
+		_dispatch_queue_init_specific_list(queue);
     }
 
-    // Need to add this to the dispatch queue which should have a container list.
-    // add this specific to the end of the list
     _dispatch_queue_insert_specific(queue, specific);
-    // should be it...
 }
-
-
-
-
-/*
-_dispatch_kevent_find(uintptr_t ident, short filter)
-{
-	uintptr_t hash = _dispatch_kevent_hash(ident, filter);
-	dispatch_kevent_t dki;
-
-	TAILQ_FOREACH(dki, &_dispatch_sources[hash], dk_list) {
-		if (dki->dk_kevent.ident == ident && dki->dk_kevent.filter == filter) {
-			break;
-		}
-	}
-	return dki;
-}
-*/
 
 void* _Nullable dispatch_queue_get_specific(dispatch_queue_t queue, const void *key) {
     dispatch_queue_specific_list_t dqsl = queue->dq_specific_q;
 	dispatch_queue_specific_t var;
-    // foreach tailq head
+
     TAILQ_FOREACH(var, &dqsl->contextList, specific) {
         if(var->key == key) {
             return var->context;
@@ -2085,7 +2049,5 @@ void* _Nullable dispatch_queue_get_specific(dispatch_queue_t queue, const void *
 }
 
 void* _Nullable dispatch_get_specific(const void *key) {
-    // get current queue
-    // if not in queue just return. How to check...?
     return dispatch_queue_get_specific(_dispatch_queue_get_current(), key);
 }
